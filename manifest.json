@@ -24,17 +24,17 @@
   "screenshots": [
     {
       "src": "https://yashrajchoudhary.github.io/RecallMaturity-/screenshot1.png",
-      "sizes": "1080x2400",
+      "sizes": "1078x2172",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Daily Revision Dashboard"
+      "label": "Daily Active Recall Dashboard"
     },
     {
       "src": "https://yashrajchoudhary.github.io/RecallMaturity-/screenshot2.png",
-      "sizes": "1080x2400",
+      "sizes": "1076x2145",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Spaced Repetition Stats"
+      "label": "Retention and Spaced Revision Stats"
     }
   ]
 }
