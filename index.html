@@ -1863,10 +1863,18 @@ function switchView(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
   document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active', b.dataset.view===name));
+  
+  // Show footer only on Today and Stats tabs
+  const footerEl = document.getElementById('appFooter');
+  if(footerEl){
+    footerEl.style.display = (name === 'today' || name === 'stats') ? 'block' : 'none';
+  }
+
   if(name==='explore'){ renderExplorer(); renderCalendar(); }
-  if(name==='forest') renderForest();
-  if(name==='stats') renderStats();
+  if(name==='forest'){ renderForest(); }
+  if(name==='stats'){ renderStats(); }
 }
+
 document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>switchView(b.dataset.view));
 
 /* ============ reminders ============ */
@@ -1916,17 +1924,17 @@ if('serviceWorker' in navigator){
 })();
 </script>
   
-<footer style="
+<footer id="appFooter" style="
   background-color: #0d1117;
-  padding: 34px 16px 44px;
-  margin-top: 50px;
+  padding: 30px 16px 110px;
+  margin-top: 40px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   text-align: center;
   user-select: none;
   -webkit-font-smoothing: antialiased;
 ">
-  <!-- Line 1: Apple styled header with glowing filled BHARAT badge -->
+  <!-- Line 1: Glowing BHARAT badge -->
   <p style="
     margin: 0;
     font-size: 15px;
@@ -1953,7 +1961,7 @@ if('serviceWorker' in navigator){
     <span style="font-size: 16px;">❤️</span>
   </p>
 
-  <!-- Line 2: Muted crisp secondary quote -->
+  <!-- Line 2: Revision Quote -->
   <p style="
     margin: 14px 0 0;
     font-size: 14px;
@@ -1964,7 +1972,7 @@ if('serviceWorker' in navigator){
     Revising today! = One day closer to your 🥼 coat
   </p>
 
-  <!-- Line 3: AIIMSonian and another high-contrast colors -->
+  <!-- Line 3: AIIMSonian line (Now 100% visible above bottom nav) -->
   <p style="
     margin: 12px 0 0;
     font-size: 15px;
