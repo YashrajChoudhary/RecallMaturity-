@@ -1878,15 +1878,46 @@ function switchView(name){
 document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>switchView(b.dataset.view));
 
 /* ============ reminders ============ */
+/* ================= SYSTEM NOTIFICATIONS DISPATCHER ================= */
+function sendStudyNotification(title, message) {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+
+  if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+    navigator.serviceWorker.ready.then(registration => {
+      registration.showNotification(title, {
+        body: message,
+        icon: 'icon-192.png',
+        badge: 'icon-192.png',
+        vibrate: [200, 100, 200],
+        tag: 'study-reminder',
+        renotify: true,
+        requireInteraction: true
+      });
+    });
+  } else {
+    new Notification(title, {
+      body: message,
+      icon: 'icon-192.png'
+    });
+  }
+}
+
 function checkReminders(){
-  const now=new Date(); const hhmm=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0'); const ts=todayStr();
-  db.topics.forEach(t=>{
-    const r=nextReview(t); if(!r) return;
-    if(r.dueDate<=ts && t.time===hhmm){
-      const key=t.id+'_'+ts+'_'+hhmm; if(db.notifiedToday[key]) return; db.notifiedToday[key]=true;
-      toast(`⏰ Ready when you are: ${t.title}`,5000);
-      if('Notification' in window && Notification.permission==='granted'){ new Notification('RecallMaturity',{body:t.title}); }
+  const now = new Date(); 
+  const hhmm = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  db.topics.forEach(t => {
+    const r = nextReview(t); 
+    if(!r) return;
+    if(r.dueDate <= ts && t.time === hhmm){
+      const key = t.id + '_' + ts + '_' + hhmm; 
+      if(db.notifiedToday[key]) return; 
+      db.notifiedToday[key] = true;
+      toast('🔔 Ready when you are: ' + (t.title || ''));
+      sendStudyNotification('RecallMaturity', 'Ready for active recall: ' + (t.title || ''));
     }
+  });
+}
+
   });
 }
 setInterval(checkReminders, 20000);
@@ -1913,15 +1944,38 @@ async function tryAutoBackup(){
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js').catch(()=>{ /* fine if missing — e.g. inside Claude's artifact preview */ });
 }
+/* ================= SYSTEM PERMISSIONS MANAGER ================= */
+async function requestAllAppPermissions() {
+  // 1. Request Notification Permission (Alerts, Reminders & Pop-ups)
+  if ('Notification' in window) {
+    try {
+      await Notification.requestPermission();
+    } catch (e) {
+      console.warn('Notification permission error:', e);
+    }
+  }
 
+  // 2. Request Camera & Microphone Access (for note photos & voice notes)
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      stream.getTracks().forEach(track => track.stop());
+    } catch (e) {
+      console.warn('Media permissions dismissed:', e);
+    }
+  }
+  }
+  
 (async function init(){
   await loadDB();
   showQuote();
   initSpeech();
   renderAll();
+  setTimeout(requestAllAppPermissions, 1000); // Prompts permissions smoothly 1s after dashboard renders
   setTimeout(tryAutoBackup, 4000);
   setInterval(tryAutoBackup, 30*60*1000);
 })();
+
 </script>
   
 <footer id="appFooter" style="
