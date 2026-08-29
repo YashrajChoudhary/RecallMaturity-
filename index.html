@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="RecallMaturity">
+<meta name="theme-color" content="#0B0F1A">
+<link rel="manifest" href="manifest.json" id="manifestLink">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230B0F1A'/%3E%3Ctext x='50' y='66' font-size='54' text-anchor='middle' fill='%23E8A33D' font-family='sans-serif'%3ER%3C/text%3E%3C/svg%3E">
+<title>RecallMaturity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B0F1A; --surface:#151C2C; --surface-2:#1D2740; --surface-3:#24304E;
+  --border:#2A3452; --text:#EEF0F7; --muted:#8B94AC;
+  --amber:#E8A33D; --amber-dim:#3A2E1A;
+  --teal:#4FC1A6; --teal-dim:#0F2E27;
+  --rose:#E85D5D; --rose-dim:#331A1D;
+  --yellow:#E0C050; --yellow-dim:#332C10;
+  --violet:#8C7CF0; --violet-dim:#211C3C;
+  --orange:#E88A3D;
+  --grey:#4A526B;
+  --gold:#FFD874;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;background:var(--ink);color:var(--text);font-family:'Inter',sans-serif;height:100%;overflow-x:hidden;}
+body{background-image:radial-gradient(700px 400px at 10% -10%,rgba(140,124,240,.13),transparent),radial-gradient(600px 400px at 100% 0%,rgba(232,163,61,.10),transparent);background-attachment:fixed;}
+::selection{background:var(--amber);color:#1a1200;}
+.mono{font-family:'JetBrains Mono',monospace;}
+.disp{font-family:'Space Grotesk',sans-serif;}
+#app{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding-bottom:80px;position:relative;}
+.orb{position:fixed;border-radius:50%;filter:blur(50px);opacity:.32;z-index:0;pointer-events:none;animation:drift 22s ease-in-out infinite;}
+.orb1{width:200px;height:200px;background:var(--violet);top:-60px;left:-60px;}
+.orb2{width:180px;height:180px;background:var(--amber);bottom:60px;right:-70px;animation-delay:-9s;}
+@keyframes drift{0%,100%{transform:translate(0,0);}50%{transform:translate(18px,-22px);}}
+header{padding:16px 16px 8px;position:sticky;top:0;z-index:20;background:linear-gradient(180deg,var(--ink) 72%,transparent);}
+.brand{display:flex;align-items:center;justify-content:space-between;}
+.brand h1{font-size:17px;margin:0;}
+.brand h1 span{color:var(--amber);}
+.rank-pill{display:flex;align-items:center;gap:6px;background:var(--surface-2);border:1px solid var(--border);padding:5px 10px;border-radius:99px;font-size:12px;cursor:pointer;position:relative;}
+.rank-pill.glow{box-shadow:0 0 12px rgba(232,163,61,.45);border-color:rgba(232,163,61,.6);}
+.rank-pill b{font-family:'JetBrains Mono',monospace;color:var(--amber);}
+.streakbit{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted);}
+
+/* COUNTDOWN badges row */
+.cd-row{display:flex;gap:6px;overflow-x:auto;margin-top:8px;padding-bottom:2px;}
+.cd-badge{flex-shrink:0;background:linear-gradient(135deg,var(--surface-2),var(--surface-3));border:1px solid rgba(232,163,61,.4);border-radius:12px;padding:6px 10px;font-size:11px;box-shadow:0 0 8px rgba(232,163,61,.15);cursor:pointer;}
+.cd-badge .cdn{color:var(--muted);font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;}
+.cd-badge .cdd{font-family:'JetBrains Mono',monospace;color:var(--amber);font-weight:600;}
+.cd-add{flex-shrink:0;border:1px dashed var(--border);border-radius:12px;padding:6px 12px;font-size:11px;color:var(--muted);background:none;cursor:pointer;}
+
+/* SPOTLIGHT */
+.spotlight{margin-top:9px;background:linear-gradient(135deg,rgba(140,124,240,.14),rgba(232,163,61,.10));border:1px solid var(--border);border-radius:14px;padding:11px 13px;position:relative;}
+.spotlight .sl-label{font-size:9.5px;text-transform:uppercase;letter-spacing:1px;color:var(--amber);font-family:'Space Grotesk',sans-serif;display:flex;justify-content:space-between;align-items:center;}
+.spotlight .sl-text{font-size:13px;margin-top:4px;line-height:1.4;white-space:pre-wrap;}
+.spotlight textarea{width:100%;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-size:13px;margin-top:6px;min-height:52px;font-family:'Inter',sans-serif;}
+.sl-edit-btn{background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;}
+.quote-mini{font-size:10.5px;color:var(--muted);margin-top:5px;display:flex;justify-content:space-between;align-items:center;}
+.quote-mini button{background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;}
+
+main{flex:1;padding:0 16px;position:relative;z-index:1;}
+.view{display:none;animation:fadeIn .25s ease;}
+.view.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.section-title{font-family:'Space Grotesk',sans-serif;font-size:12.5px;text-transform:uppercase;letter-spacing:1.1px;color:var(--muted);margin:18px 0 8px;display:flex;align-items:center;justify-content:space-between;}
+.count-badge{background:var(--surface-2);color:var(--text);font-size:11px;padding:2px 8px;border-radius:99px;font-family:'JetBrains Mono',monospace;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 13px;margin-bottom:9px;}
+.empty{text-align:center;color:var(--muted);font-size:13px;padding:26px 10px;border:1px dashed var(--border);border-radius:14px;margin-top:6px;}
+.empty b{color:var(--text);display:block;margin-bottom:4px;font-family:'Space Grotesk',sans-serif;}
+
+.slab-block{margin-bottom:0;touch-action:pan-y;}
+.slab-block.dragging{opacity:.85;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:30;position:relative;}
+.toggle-head{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 14px;cursor:pointer;margin-bottom:8px;gap:8px;}
+.toggle-head .slab-handle{color:var(--muted);cursor:grab;touch-action:none;flex-shrink:0;padding:2px 4px 2px 0;}
+.toggle-head .th-left{display:flex;align-items:center;gap:9px;flex:1;min-width:0;}
+.toggle-head .th-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;}
+.toggle-head .th-sub{font-size:11px;color:var(--muted);}
+.toggle-head .th-arrow{color:var(--muted);transition:transform .15s;font-size:12px;flex-shrink:0;}
+.toggle-head.open .th-arrow{transform:rotate(180deg);}
+.toggle-head .slab-edit{background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;flex-shrink:0;padding:2px 4px;}
+.toggle-body{display:none;padding-top:2px;}
+.toggle-body.show{display:block;}
+
+.task{display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:11px 9px 11px 5px;margin-bottom:8px;touch-action:pan-y;}
+.task.priority{border-color:rgba(232,163,61,.5);}
+.task.missed{border-color:rgba(232,93,93,.4);}
+.task.dragging{opacity:.85;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:30;position:relative;}
+.task.justdone{animation:popDone .5s ease;}
+@keyframes popDone{0%{transform:scale(1);}40%{transform:scale(1.02);background:var(--teal-dim);}100%{transform:scale(1);}}
+.handle{color:var(--muted);padding:6px;cursor:grab;touch-action:none;flex-shrink:0;}
+.task-main{flex:1;min-width:0;cursor:pointer;}
+.task-top{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.tag{font-size:10px;padding:2px 7px;border-radius:6px;font-weight:600;white-space:nowrap;}
+.task-title{font-weight:600;font-size:13.5px;margin:3px 0 2px;}
+.task-meta{font-size:11px;color:var(--muted);display:flex;gap:7px;align-items:center;flex-wrap:wrap;}
+.rep-dots{display:flex;gap:3px;}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--border);}
+.dot.filled{background:var(--teal);}
+.dot.current{background:var(--amber);}
+.time-chip{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--amber);}
+.priority .time-chip{color:var(--amber);}
+.missed .time-chip{color:var(--rose);}
+.task-actions{display:flex;flex-direction:column;gap:5px;flex-shrink:0;}
+.done-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--teal);background:transparent;color:var(--teal);font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.done-btn:active{background:var(--teal);color:#04231b;transform:scale(.88);}
+.snooze-btn{border:none;background:none;color:var(--muted);font-size:10px;cursor:pointer;padding:2px;}
+.stars-mini{font-size:9px;color:var(--amber);letter-spacing:-1px;}
+
+.btn{font-family:'Inter',sans-serif;border:none;border-radius:12px;padding:12px 15px;font-size:14px;font-weight:600;cursor:pointer;width:100%;}
+.btn-primary{background:linear-gradient(135deg,var(--amber),#f0b85a);color:#211703;}
+.btn-primary:active{transform:scale(.98);}
+.btn-ghost{background:var(--surface-2);color:var(--text);border:1px solid var(--border);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--amber));color:#211703;}
+.btn-row{display:flex;gap:8px;}
+.btn-row .btn{width:auto;flex:1;}
+.btn-sm{padding:7px 11px;font-size:11.5px;border-radius:9px;}
+.link-btn{background:none;border:none;color:var(--amber);font-size:12px;cursor:pointer;padding:0;text-align:left;}
+
+label{font-size:11.5px;color:var(--muted);display:block;margin:12px 0 5px;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;letter-spacing:.5px;}
+input[type=text],input[type=time],input[type=date],input[type=number],textarea,select{
+  width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+  padding:10px 11px;border-radius:10px;font-size:14px;font-family:'Inter',sans-serif;
+}
+textarea{resize:vertical;min-height:58px;}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--amber);outline-offset:1px;}
+.chip-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;}
+.chip-opt{padding:6px 11px;border-radius:99px;border:1px solid var(--border);background:var(--surface-2);font-size:12px;cursor:pointer;color:var(--muted);display:flex;align-items:center;gap:5px;}
+.chip-opt.sel{border-color:var(--amber);color:var(--amber);background:var(--amber-dim);}
+.mic-row{display:flex;gap:8px;align-items:center;margin-top:7px;}
+.mic-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font-size:16px;flex-shrink:0;cursor:pointer;}
+.mic-btn.live{background:var(--rose-dim);border-color:var(--rose);color:var(--rose);animation:pulse 1.2s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,93,93,.4);}50%{box-shadow:0 0 0 8px rgba(232,93,93,0);}}
+@keyframes pulseAmber{0%,100%{box-shadow:0 0 6px rgba(232,163,61,.5);}50%{box-shadow:0 0 16px rgba(232,163,61,.9);}}
+.attach-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:7px;}
+.thumb{width:50px;height:50px;border-radius:8px;object-fit:cover;border:1px solid var(--border);}
+.thumb-x{position:absolute;top:-5px;right:-5px;background:var(--rose);color:#fff;border-radius:50%;width:16px;height:16px;font-size:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.thumb-wrap{position:relative;}
+
+.picker-box{background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:10px 11px;font-size:13px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.picker-box .ph{color:var(--muted);}
+
+.backdrop{position:fixed;inset:0;background:rgba(6,8,14,.72);z-index:90;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(2px);}
+.backdrop.show{display:flex;}
+.sheet{background:var(--surface);border:1px solid var(--border);border-radius:20px 20px 0 0;max-width:520px;width:100%;max-height:88vh;display:flex;flex-direction:column;animation:sheetUp .25s ease;}
+@keyframes sheetUp{from{transform:translateY(30px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.sheet-head{padding:13px 15px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.sheet-head h3{margin:0;font-family:'Space Grotesk',sans-serif;font-size:14.5px;}
+.sheet-close{background:var(--surface-2);border:1px solid var(--border);color:var(--text);width:28px;height:28px;border-radius:50%;cursor:pointer;flex-shrink:0;}
+.sheet-body{overflow-y:auto;padding:10px 14px 22px;}
+.sub-tabs{display:flex;gap:6px;padding:9px 12px 0;flex-wrap:wrap;}
+.sub-tab{padding:7px 12px;border-radius:99px;border:1px solid var(--border);background:var(--surface-2);font-size:12.5px;cursor:pointer;color:var(--muted);}
+.sub-tab.sel{color:var(--ink);font-weight:600;}
+.acc-chapter{border:1px solid var(--border);border-radius:12px;margin:7px 0;overflow:hidden;}
+.acc-head{display:flex;align-items:center;gap:8px;padding:10px 11px;cursor:pointer;background:var(--surface-2);}
+.slab{width:8px;height:20px;border-radius:3px;flex-shrink:0;}
+.acc-title{flex:1;font-size:13px;font-weight:600;}
+.acc-sub{font-size:10px;color:var(--muted);font-weight:400;margin-top:1px;}
+.acc-pct{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);}
+.acc-arrow{font-size:11px;color:var(--muted);transition:transform .15s;}
+.acc-chapter.open .acc-arrow{transform:rotate(180deg);}
+.acc-body{display:none;padding:4px 10px 10px 12px;}
+.acc-chapter.open .acc-body{display:block;}
+.topic-pick{display:flex;align-items:center;gap:8px;padding:8px 6px;font-size:12.5px;border-radius:8px;cursor:pointer;}
+.topic-pick:active{background:var(--surface-3);}
+.topic-pick .tslab{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.topic-pick.chosen{background:var(--amber-dim);color:var(--amber);}
+.chip-tools{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;}
+.chip-tool{font-size:10px;color:var(--muted);border:1px solid var(--border);border-radius:7px;padding:3px 7px;background:var(--surface-3);cursor:pointer;}
+.chip-tool.active{border-color:var(--amber);color:var(--amber);}
+.chapter-note-txt{font-size:11px;color:var(--muted);margin-top:5px;font-style:italic;padding:5px 7px;background:var(--surface-3);border-radius:7px;}
+.status-chip{font-size:10px;padding:3px 8px;border-radius:7px;font-weight:600;}
+
+.field-row{margin-bottom:8px;}
+.field-row label{margin:6px 0 4px;}
+
+.topic-row{display:flex;align-items:center;gap:9px;padding:10px 4px;border-radius:10px;touch-action:pan-y;background:var(--surface-3);margin-bottom:6px;}
+.topic-row.dragging{opacity:.85;box-shadow:0 6px 18px rgba(0,0,0,.45);}
+.timeline{display:flex;gap:4px;margin-top:4px;}
+.tseg{width:14px;height:5px;border-radius:3px;background:var(--border);}
+.tseg.done{background:var(--teal);}
+.tseg.next{background:var(--amber);}
+
+/* GLOWING SCHEDULE TRAIL + TIMELINE */
+.sched-trail{display:flex;align-items:flex-start;overflow-x:auto;padding:14px 4px 6px;position:relative;gap:0;}
+.sched-node-wrap{display:flex;flex-direction:column;align-items:center;flex-shrink:0;position:relative;width:56px;}
+.sched-line{position:absolute;top:19px;left:-28px;width:56px;height:2px;background:repeating-linear-gradient(90deg,var(--border) 0 4px,transparent 4px 8px);z-index:0;}
+.sched-line.done{background:repeating-linear-gradient(90deg,var(--teal) 0 4px,transparent 4px 8px);}
+.sched-node-wrap:first-child .sched-line{display:none;}
+.sched-node{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;border:2px solid var(--border);background:var(--surface-2);color:var(--muted);z-index:1;position:relative;}
+.sched-node.done{background:var(--teal-dim);border-color:var(--teal);color:var(--teal);}
+.sched-node.current{background:var(--amber-dim);border-color:var(--amber);color:var(--amber);box-shadow:0 0 14px rgba(232,163,61,.6);animation:pulseAmber 1.8s infinite;}
+.sched-lbl{font-size:9px;color:var(--muted);margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.mini-sched .sched-node{width:26px;height:26px;font-size:8.5px;}
+.mini-sched .sched-node-wrap{width:38px;}
+.mini-sched .sched-line{top:12px;left:-19px;width:38px;}
+.mini-sched .sched-lbl{font-size:7.5px;}
+
+.rt-item{display:flex;gap:10px;}
+.rt-rail{display:flex;flex-direction:column;align-items:center;width:20px;flex-shrink:0;}
+.rt-dot{width:14px;height:14px;border-radius:50%;background:var(--surface-2);border:2px solid var(--border);flex-shrink:0;}
+.rt-dot.done{background:var(--teal);border-color:var(--teal);box-shadow:0 0 8px rgba(79,193,166,.6);}
+.rt-dot.current{background:var(--amber);border-color:var(--amber);box-shadow:0 0 10px rgba(232,163,61,.7);}
+.rt-line{width:2px;flex:1;background:var(--border);margin:2px 0;min-height:20px;}
+.rt-line.done{background:var(--teal);}
+.rt-content{flex:1;padding-bottom:14px;}
+.rt-date{font-size:12.5px;font-weight:600;}
+.rt-status{font-size:10.5px;color:var(--muted);margin-top:1px;}
+.rt-status.done{color:var(--teal);}
+.rt-status.current{color:var(--amber);}
+
+.focus-card{background:linear-gradient(135deg,rgba(232,163,61,.16),rgba(140,124,240,.12));border:1px solid rgba(232,163,61,.4);border-radius:14px;padding:13px;margin-bottom:12px;}
+.focus-card .fc-label{font-size:9.5px;text-transform:uppercase;letter-spacing:1px;color:var(--amber);}
+.focus-card .fc-title{font-size:15px;font-weight:700;margin-top:3px;font-family:'Space Grotesk',sans-serif;}
+.focus-card .fc-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.progress-bar{height:9px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin-top:6px;}
+.progress-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--amber));}
+.stars-row{display:flex;gap:4px;font-size:20px;cursor:pointer;}
+.stars-row span{opacity:.3;}
+.stars-row span.on{opacity:1;}
+.tagchip-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+.tagchip{background:var(--surface-2);border:1px solid var(--border);border-radius:99px;padding:4px 10px;font-size:11px;display:flex;align-items:center;gap:5px;}
+.tagchip .x{cursor:pointer;color:var(--muted);}
+.reason-tally{display:flex;justify-content:space-between;font-size:11.5px;padding:6px 0;border-bottom:1px solid var(--border);}
+.reason-tally:last-child{border-bottom:none;}
+
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
+.cal-head button{background:var(--surface-2);border:1px solid var(--border);color:var(--text);width:30px;height:30px;border-radius:8px;font-size:14px;cursor:pointer;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal-dow{text-align:center;font-size:9.5px;color:var(--muted);padding-bottom:4px;font-family:'JetBrains Mono',monospace;}
+.cal-day{aspect-ratio:1;border-radius:9px;background:var(--surface);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11.5px;position:relative;cursor:pointer;}
+.cal-day.today{border-color:var(--amber);}
+.cal-day.blank{background:transparent;border:none;}
+.cal-day.sel{background:var(--surface-3);}
+.cal-dots{position:absolute;bottom:3px;display:flex;gap:2px;}
+.cal-dots i{width:4px;height:4px;border-radius:50%;display:block;}
+
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px;text-align:center;}
+.stat-box .v{font-family:'JetBrains Mono',monospace;font-size:20px;color:var(--amber);}
+.stat-box .l{font-size:10.5px;color:var(--muted);margin-top:2px;}
+canvas{width:100%;display:block;}
+.level-bar{height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin-top:6px;}
+.level-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--amber),var(--violet));}
+.legend{display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;font-size:10.5px;color:var(--muted);}
+.legend span{display:inline-flex;align-items:center;gap:5px;}
+.legend i{width:9px;height:9px;border-radius:3px;display:inline-block;}
+
+.badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.badge{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 6px;text-align:center;opacity:.35;}
+.badge.unlocked{opacity:1;border-color:rgba(232,163,61,.5);background:var(--amber-dim);}
+.badge .bic{font-size:20px;}
+.badge .bname{font-size:9.5px;margin-top:3px;font-weight:600;line-height:1.2;}
+
+/* FOREST MAP */
+.forest-map{position:relative;border-radius:18px;overflow:hidden;background:radial-gradient(ellipse at 50% 100%,rgba(79,193,166,.14),transparent 70%),linear-gradient(180deg,#0e1424,#0a0e18);border:1px solid var(--border);padding:10px 6px 4px;}
+.forest-svg-wrap{width:100%;overflow-x:auto;}
+.tree-node-label{font-size:8.5px;fill:var(--muted);font-family:Inter,sans-serif;}
+.tree-node-pct{font-size:8px;fill:var(--amber);font-family:'JetBrains Mono',monospace;}
+
+nav{position:fixed;bottom:0;left:0;right:0;background:rgba(11,15,26,.92);backdrop-filter:blur(10px);border-top:1px solid var(--border);display:flex;justify-content:center;z-index:40;}
+.nav-inner{max-width:520px;width:100%;display:flex;}
+.navbtn{flex:1;background:none;border:none;color:var(--muted);padding:9px 3px 11px;font-size:10px;font-family:'Space Grotesk',sans-serif;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;}
+.navbtn .ic{font-size:17px;}
+.navbtn.active{color:var(--amber);}
+
+#toast-wrap{position:fixed;top:14px;left:0;right:0;display:flex;justify-content:center;z-index:100;pointer-events:none;}
+.toast{background:var(--surface-3);border:1px solid var(--amber);color:var(--text);padding:10px 15px;border-radius:12px;font-size:12.5px;box-shadow:0 8px 24px rgba(0,0,0,.5);max-width:88%;animation:toastIn .25s ease;}
+@keyframes toastIn{from{transform:translateY(-14px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.badge-toast{border-color:var(--violet);}
+.chest-toast{background:linear-gradient(135deg,var(--gold),var(--amber));color:#211703;border-color:var(--gold);font-weight:700;animation:chestFlip .6s ease, toastIn .25s ease;}
+@keyframes chestFlip{0%{transform:rotateY(90deg);}100%{transform:rotateY(0);}}
+.placeholder{border:1.5px dashed var(--amber);border-radius:14px;height:0;margin-bottom:0;overflow:hidden;transition:height .15s,margin .15s;}
+.placeholder.show{height:60px;margin-bottom:8px;}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
+::-webkit-scrollbar{width:0;height:0;}
+
+/* outcome modal buttons */
+.outcome-row{display:flex;gap:8px;margin:12px 0;}
+.outcome-btn{flex:1;border-radius:12px;padding:14px 6px;text-align:center;cursor:pointer;border:2px solid var(--border);background:var(--surface-2);}
+.outcome-btn .oic{font-size:20px;}
+.outcome-btn .olabel{font-size:12px;font-weight:700;margin-top:4px;}
+.outcome-btn .osub{font-size:9.5px;color:var(--muted);}
+.outcome-btn.sel-forgot{border-color:var(--rose);background:var(--rose-dim);}
+.outcome-btn.sel-hazy{border-color:var(--yellow);background:var(--yellow-dim);}
+.outcome-btn.sel-solid{border-color:var(--teal);background:var(--teal-dim);}
+</style>
+</head>
+<body>
+<div class="orb orb1"></div><div class="orb orb2"></div>
+<div id="toast-wrap"></div>
+<canvas id="confetti"></canvas>
+<div id="app">
+
+<header>
+  <div class="brand">
+    <h1 class="disp">Recall<span>Maturity</span></h1>
+    <div style="display:flex;gap:7px;align-items:center;">
+      <div class="rank-pill" id="rankPillBtn">🎖️ <b id="rankVal" class="mono">—</b></div>
+      <div class="streakbit">🔥<span id="streakVal" class="mono">0</span></div>
+    </div>
+  </div>
+  <div class="cd-row" id="cdRow"></div>
+  <div class="spotlight" id="spotlightBox">
+    <div class="sl-label"><span>✦ Spotlight</span><button class="sl-edit-btn" id="spotlightEditBtn">edit</button></div>
+    <div class="sl-text" id="spotlightText"></div>
+    <textarea id="spotlightInput" style="display:none;" placeholder="Your own note, instruction, or quote..."></textarea>
+    <div class="quote-mini"><span id="quoteTag"></span><button id="quoteRefresh">⟳ new quote</button></div>
+  </div>
+</header>
+
+<main>
+
+  <!-- TODAY -->
+  <section id="view-today" class="view active">
+    <div id="slabsContainer"></div>
+    <button class="btn btn-ghost" id="addSlabBtn" style="margin-top:2px;">+ Add section</button>
+  </section>
+
+  <!-- LOG -->
+  <section id="view-add" class="view">
+    <div class="section-title">Log a study session</div>
+    <div class="card">
+      <label>Pick from syllabus</label>
+      <div class="picker-box" id="openPicker"><span class="ph" id="pickerLabel">Tap to choose Subject → Chapter → Topic</span><span>▸</span></div>
+      <div style="font-size:10.5px;color:var(--muted);margin-top:5px;">Tip: inside the picker, tap a <b>chapter</b> name to add its whole topic list at once — or tap one topic to pick just that.</div>
+
+      <label>Or custom topic</label>
+      <input type="text" id="inTitle" placeholder="e.g. AIIMS PYQ set, mock #4 errors...">
+
+      <label>Notes <span style="text-transform:none;color:var(--muted);">(text or voice)</span></label>
+      <textarea id="inNotes" placeholder="Key points, doubts, page refs..."></textarea>
+      <div class="mic-row"><button class="mic-btn" id="micBtn" type="button">🎤</button><span style="font-size:11px;color:var(--muted);" id="micHint">Tap to dictate</span></div>
+
+      <label>Attach photos</label>
+      <input type="file" id="inImage" accept="image/*" capture="environment" multiple style="display:none;">
+      <button class="btn btn-ghost" type="button" id="attachBtn" style="margin-top:5px;">📷 Add photo</button>
+      <div class="attach-row" id="attachPreview"></div>
+
+      <label>First review time today</label>
+      <input type="time" id="inTime" value="19:00">
+
+      <div style="margin-top:16px;"><button class="btn btn-primary" id="saveTopicBtn">Save & schedule reviews</button></div>
+    </div>
+
+    <button class="link-btn" id="openAdvancedTask" style="margin:4px 0 14px;">⚙️ Advanced task setup — custom name, duration, reminder & per-review intervals</button>
+  </section>
+
+  <!-- EXPLORER -->
+  <section id="view-explore" class="view">
+    <div class="card" style="position:sticky;top:0;z-index:5;">
+      <div id="curveSelLabel" style="font-size:12.5px;color:var(--muted);margin-bottom:4px;">Select a chapter below</div>
+      <canvas id="curveCanvas" height="130"></canvas>
+      <div class="sched-trail mini-sched" id="roadmapStrip"></div>
+      <div class="legend">
+        <span><i style="background:var(--teal);"></i>fresh</span>
+        <span><i style="background:var(--yellow);"></i>fading soon</span>
+        <span><i style="background:var(--rose);"></i>ready now</span>
+        <span><i style="background:var(--grey);"></i>not started</span>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:14px;">Filter <span class="count-badge" id="filterTopicCount">0 logged</span></div>
+    <div class="card" style="padding:9px;">
+      <div class="sub-tabs" id="subjTabs"></div>
+      <div class="sub-tabs" id="classTabs" style="margin-top:6px;"></div>
+      <div class="sub-tabs" id="statusTabs" style="margin-top:6px;"></div>
+      <div id="chapterList" style="margin-top:7px;"></div>
+    </div>
+
+    <div class="section-title">Calendar</div>
+    <div class="card">
+      <div class="cal-head"><button id="calPrev">‹</button><div class="disp" id="calLabel" style="font-size:13.5px;"></div><button id="calNext">›</button></div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+    <div id="calDayDetail"></div>
+
+    <div class="section-title">Logged topics <span class="count-badge" id="topicCount">0</span></div>
+    <input type="text" id="topicSearch" placeholder="Search logged topics..." style="margin-bottom:9px;">
+    <div id="allTopics"></div>
+  </section>
+
+  <!-- FOREST -->
+  <section id="view-forest" class="view">
+    <div class="section-title">Your forest <span class="count-badge" id="forestCount">0 trees</span></div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Each chapter you've started grows its own tree along the trail. More on-time reviews, fuller and more colorful it gets.</div>
+    <div class="sub-tabs" id="forestSubjTabs" style="padding:0 0 8px;"></div>
+    <div class="forest-map"><div class="forest-svg-wrap" id="forestSvgWrap"></div></div>
+  </section>
+
+  <!-- STATS -->
+  <section id="view-stats" class="view">
+    <div class="section-title">Progress</div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="v mono" id="statXP">0</div><div class="l">XP</div></div>
+      <div class="stat-box"><div class="v mono" id="statRank">—</div><div class="l" id="statRankSub">Rookie</div></div>
+      <div class="stat-box"><div class="v mono" id="statReviews">0</div><div class="l">Reviews done</div></div>
+      <div class="stat-box"><div class="v mono" id="statTopics">0</div><div class="l">Topics tracked</div></div>
+    </div>
+    <div class="level-bar"><i id="levelFill" style="width:0%"></i></div>
+
+    <div class="section-title">Badges</div>
+    <div class="badge-grid" id="badgeGrid"></div>
+
+    <div class="section-title">Forgetting diagnostic</div>
+    <div class="card" id="forgetDiagCard"></div>
+
+    <div class="section-title">Review-slot instructions</div>
+    <div class="card"><div style="font-size:11.5px;color:var(--muted);margin-bottom:8px;">Your own primary meaning for each slot — tap "reference" to also see the general method.</div><div id="slotInstructions"></div></div>
+
+    <div class="section-title">Review intervals (default for new topics)</div>
+    <div class="card">
+      <label style="margin-top:0;">Days after first study (comma separated)</label>
+      <input type="text" id="intervalInput">
+      <button class="btn btn-ghost" style="margin-top:10px;" id="saveIntervals">Save intervals</button>
+    </div>
+
+    <div class="section-title">Countdowns (D-Day)</div>
+    <div class="card" id="countdownManager"></div>
+
+    <div class="section-title">Reminders</div>
+    <div class="card">
+      <div style="font-size:12.5px;margin-bottom:9px;">In-app popups fire while this is open. Add to your home screen (share/menu → Add to Home Screen) so it opens instantly. For alerts while your phone is locked, also set a phone alarm.</div>
+      <button class="btn btn-ghost" id="notifPermBtn">Enable browser notifications</button>
+    </div>
+
+    <div class="section-title">Backup</div>
+    <div class="card">
+      <button class="btn btn-primary" id="shareBackupBtn">📤 Share / save backup now</button>
+      <div style="font-size:10.5px;color:var(--muted);margin-top:6px;">One tap → send it to your own Gmail, save to Drive, WhatsApp yourself, or save to Files — whatever your phone offers. No setup needed, works right now.</div>
+    </div>
+    <div class="card btn-row">
+      <button class="btn btn-ghost" id="exportBtn">Download backup file</button>
+      <button class="btn btn-ghost" id="importBtn">Restore from file</button>
+      <input type="file" id="importFile" accept="application/json" style="display:none;">
+    </div>
+    <div style="font-size:10.5px;color:var(--muted);text-align:center;margin:5px 0 12px;">Data lives in this app's own storage across sessions. Back up regularly for a copy you fully control.</div>
+
+    <div class="section-title">Google Drive auto-backup <span style="font-weight:400;text-transform:none;color:var(--muted);font-size:10px;">(optional)</span></div>
+    <div class="card" id="driveCard"></div>
+  </section>
+
+</main>
+
+<nav><div class="nav-inner">
+  <button class="navbtn active" data-view="today"><span class="ic">📋</span>Today</button>
+  <button class="navbtn" data-view="add"><span class="ic">➕</span>Log</button>
+  <button class="navbtn" data-view="explore"><span class="ic">🧭</span>Explorer</button>
+  <button class="navbtn" data-view="forest"><span class="ic">🌳</span>Forest</button>
+  <button class="navbtn" data-view="stats"><span class="ic">📈</span>Stats</button>
+</div></nav>
+</div>
+
+<div class="backdrop" id="sheetBackdrop"><div class="sheet">
+  <div class="sheet-head"><h3 id="sheetTitle">Choose topic</h3><button class="sheet-close" id="sheetClose">✕</button></div>
+  <div class="sub-tabs" id="sheetSubjTabs"></div>
+  <div class="sheet-body" id="sheetBody"></div>
+</div></div>
+
+<div class="backdrop" id="modalBackdrop"><div class="sheet" style="border-radius:20px;max-height:75vh;">
+  <div class="sheet-head"><h3 id="modalTitle">Edit</h3><button class="sheet-close" id="modalClose">✕</button></div>
+  <div class="sheet-body" id="modalBody"></div>
+  <div style="padding:12px 15px;"><button class="btn btn-primary" id="modalSave">Save</button></div>
+</div></div>
+
+<div class="backdrop" id="topicBackdrop"><div class="sheet" style="max-height:92vh;">
+  <div class="sheet-head"><h3 id="topicSheetTitle">Topic</h3><button class="sheet-close" id="topicSheetClose">✕</button></div>
+  <div class="sheet-body" id="topicSheetBody"></div>
+</div></div>
+
+<div class="backdrop" id="rankBackdrop"><div class="sheet">
+  <div class="sheet-head"><h3>Rank ladder</h3><button class="sheet-close" id="rankSheetClose">✕</button></div>
+  <div class="sheet-body" id="rankSheetBody"></div>
+</div></div>
+
+<script>
+/* ============ SYLLABUS (unchanged) ============ */
+const SYLLABUS = {
+"Physics": {
+ "Class 11": [
+  ["1. Physical World", ["1.1 What is Physics?","1.2 Scope and Excitement of Physics","1.3 Physics, Technology and Society","1.4 Fundamental Forces in Nature","1.5 Nature of Physical Laws"]],
+  ["2. Units and Measurement", ["2.1 Introduction","2.2 The International System of Units","2.3 Measurement of Length","2.4 Measurement of Mass","2.5 Measurement of Time","2.6 Accuracy, Precision, Errors in Measurement","2.7 Significant Figures","2.8 Dimensions of Physical Quantities","2.9 Dimensional Formulae and Equations","2.10 Dimensional Analysis and its Applications"]],
+  ["3. Motion in a Straight Line", ["3.1 Introduction","3.2 Position, Path Length and Displacement","3.3 Average Velocity and Average Speed","3.4 Instantaneous Velocity and Speed","3.5 Acceleration","3.6 Kinematic Equations for Uniformly Accelerated Motion","3.7 Relative Velocity"]],
+  ["4. Motion in a Plane", ["4.1 Introduction","4.2 Scalars and Vectors","4.3 Multiplication of Vectors by Real Numbers","4.4 Addition and Subtraction of Vectors","4.5 Resolution of Vectors","4.6 Vector Addition — Analytical Method","4.7 Motion in a Plane","4.8 Motion with Constant Acceleration","4.9 Relative Velocity in Two Dimensions","4.10 Projectile Motion","4.11 Uniform Circular Motion"]],
+  ["5. Laws of Motion", ["5.1 Introduction","5.2 Aristotle's Fallacy","5.3 The Law of Inertia","5.4 Newton's First Law of Motion","5.5 Newton's Second Law of Motion","5.6 Newton's Third Law of Motion","5.7 Conservation of Momentum","5.8 Equilibrium of a Particle","5.9 Common Forces in Mechanics","5.10 Circular Motion","5.11 Solving Problems in Mechanics"]],
+  ["6. Work, Energy and Power", ["6.1 Introduction","6.2 Work-Energy Theorem","6.3 Work","6.4 Kinetic Energy","6.5 Work done by a Variable Force","6.6 Work-Energy Theorem for a Variable Force","6.7 Potential Energy","6.8 Conservation of Mechanical Energy","6.9 Potential Energy of a Spring","6.10 Various Forms of Energy","6.11 Power","6.12 Collisions"]],
+  ["7. System of Particles and Rotational Motion", ["7.1 Introduction","7.2 Centre of Mass","7.3 Motion of Centre of Mass","7.4 Linear Momentum of a System of Particles","7.5 Vector Product of Two Vectors","7.6 Angular Velocity","7.7 Torque and Angular Momentum","7.8 Equilibrium of a Rigid Body","7.9 Moment of Inertia","7.10 Perpendicular and Parallel Axes","7.11 Kinematics of Rotational Motion","7.12 Dynamics of Rotational Motion","7.13 Angular Momentum in Rotation","7.14 Rolling Motion"]],
+  ["8. Gravitation", ["8.1 Introduction","8.2 Kepler's Laws","8.3 Universal Law of Gravitation","8.4 The Gravitational Constant","8.5 Acceleration Due to Gravity of Earth","8.6 g Below and Above Surface","8.7 Gravitational Potential Energy","8.8 Escape Speed","8.9 Earth Satellites","8.10 Energy of an Orbiting Satellite","8.11 Geostationary and Polar Satellites","8.12 Weightlessness"]],
+  ["9. Mechanical Properties of Solids", ["9.1 Introduction","9.2 Elastic Behaviour of Solids","9.3 Stress and Strain","9.4 Hooke's Law","9.5 Stress-Strain Curve","9.6 Elastic Moduli","9.7 Applications of Elastic Behaviour"]],
+  ["10. Mechanical Properties of Fluids", ["10.1 Introduction","10.2 Pressure","10.3 Streamline Flow","10.4 Bernoulli's Principle","10.5 Viscosity and Stokes' Law","10.6 Reynolds Number","10.7 Surface Tension"]],
+  ["11. Thermal Properties of Matter", ["11.1 Introduction","11.2 Temperature and Heat","11.3 Measurement of Temperature","11.4 Ideal-Gas Equation","11.5 Thermal Expansion","11.6 Specific Heat Capacity","11.7 Calorimetry","11.8 Change of State","11.9 Heat Transfer","11.10 Newton's Law of Cooling"]],
+  ["12. Thermodynamics", ["12.1 Introduction","12.2 Thermal Equilibrium","12.3 Zeroth Law","12.4 Heat, Internal Energy and Work","12.5 First Law of Thermodynamics","12.6 Specific Heat Capacity","12.7 Thermodynamic State Variables","12.8 Thermodynamic Processes","12.9 Heat Engines","12.10 Refrigerators and Heat Pumps","12.11 Second Law","12.12 Reversible/Irreversible Processes","12.13 Carnot Engine"]],
+  ["13. Kinetic Theory", ["13.1 Introduction","13.2 Molecular Nature of Matter","13.3 Behaviour of Gases","13.4 Kinetic Theory of an Ideal Gas","13.5 Law of Equipartition of Energy","13.6 Specific Heat Capacity","13.7 Mean Free Path"]],
+  ["14. Oscillations", ["14.1 Introduction","14.2 Periodic and Oscillatory Motions","14.3 Simple Harmonic Motion","14.4 SHM and Uniform Circular Motion","14.5 Velocity and Acceleration in SHM","14.6 Force Law for SHM","14.7 Energy in SHM","14.8 Systems Executing SHM","14.9 Damped SHM","14.10 Forced Oscillations and Resonance"]],
+  ["15. Waves", ["15.1 Introduction","15.2 Transverse and Longitudinal Waves","15.3 Displacement Relation in a Progressive Wave","15.4 Speed of a Travelling Wave","15.5 Superposition of Waves","15.6 Reflection of Waves","15.7 Beats","15.8 Doppler Effect"]]
+ ],
+ "Class 12": [
+  ["1. Electric Charges and Fields", ["1.1 Introduction","1.2 Electric Charge","1.3 Conductors and Insulators","1.4 Charging by Induction","1.5 Basic Properties of Electric Charge","1.6 Coulomb's Law","1.7 Forces between Multiple Charges","1.8 Electric Field","1.9 Electric Field Lines","1.10 Electric Flux","1.11 Electric Dipole","1.12 Dipole in Uniform Field","1.13 Continuous Charge Distribution","1.14 Gauss's Law","1.15 Applications of Gauss's Law"]],
+  ["2. Electrostatic Potential and Capacitance", ["2.1 Introduction","2.2 Electrostatic Potential","2.3 Potential due to a Point Charge","2.4 Potential due to a Dipole","2.5 Potential due to a System of Charges","2.6 Equipotential Surfaces","2.7 Potential Energy of a System","2.8 Potential Energy in External Field","2.9 Electrostatics of Conductors","2.10 Dielectrics and Polarisation","2.11 Capacitors and Capacitance","2.12 Parallel Plate Capacitor","2.13 Effect of Dielectric","2.14 Combination of Capacitors","2.15 Energy Stored in a Capacitor","2.16 Van de Graaff Generator"]],
+  ["3. Current Electricity", ["3.1 Introduction","3.2 Electric Current","3.3 Electric Currents in Conductors","3.4 Ohm's Law","3.5 Drift of Electrons","3.6 Limitations of Ohm's Law","3.7 Resistivity of Materials","3.8 Temperature Dependence of Resistivity","3.9 Electrical Energy, Power","3.10 Combination of Resistors","3.11 Cells, EMF, Internal Resistance","3.12 Cells in Series and Parallel","3.13 Kirchhoff's Rules","3.14 Wheatstone Bridge","3.15 Meter Bridge","3.16 Potentiometer"]],
+  ["4. Moving Charges and Magnetism", ["4.1 Introduction","4.2 Magnetic Force","4.3 Motion in a Magnetic Field","4.4 Motion in Combined Fields","4.5 Biot-Savart Law","4.6 Field on Axis of Circular Loop","4.7 Ampere's Circuital Law","4.8 Solenoid and Toroid","4.9 Force between Parallel Currents","4.10 Torque on Current Loop","4.11 Moving Coil Galvanometer"]],
+  ["5. Magnetism and Matter", ["5.1 Introduction","5.2 The Bar Magnet","5.3 Magnetism and Gauss's Law","5.4 The Earth's Magnetism","5.5 Magnetisation and Magnetic Intensity","5.6 Magnetic Properties of Materials","5.7 Permanent Magnets and Electromagnets"]],
+  ["6. Electromagnetic Induction", ["6.1 Introduction","6.2 Faraday and Henry Experiments","6.3 Magnetic Flux","6.4 Faraday's Law","6.5 Lenz's Law","6.6 Motional EMF","6.7 Energy Consideration","6.8 Eddy Currents","6.9 Inductance","6.10 AC Generator"]],
+  ["7. Alternating Current", ["7.1 Introduction","7.2 AC on a Resistor","7.3 Phasors","7.4 AC on an Inductor","7.5 AC on a Capacitor","7.6 Series LCR Circuit","7.7 Power in AC Circuit","7.8 LC Oscillations","7.9 Transformers"]],
+  ["8. Electromagnetic Waves", ["8.1 Introduction","8.2 Displacement Current","8.3 Electromagnetic Waves","8.4 Electromagnetic Spectrum"]],
+  ["9. Ray Optics and Optical Instruments", ["9.1 Introduction","9.2 Reflection by Spherical Mirrors","9.3 Refraction","9.4 Total Internal Reflection","9.5 Refraction at Spherical Surfaces","9.6 Refraction through a Prism","9.7 Dispersion by a Prism","9.8 Natural Phenomena due to Sunlight","9.9 Optical Instruments"]],
+  ["10. Wave Optics", ["10.1 Introduction","10.2 Huygens Principle","10.3 Refraction/Reflection using Huygens","10.4 Coherent Addition of Waves","10.5 Interference — Young's Experiment","10.6 Diffraction","10.7 Polarisation"]],
+  ["11. Dual Nature of Radiation and Matter", ["11.1 Introduction","11.2 Electron Emission","11.3 Photoelectric Effect","11.4 Study of Photoelectric Effect","11.5 Einstein's Photoelectric Equation","11.6 Particle Nature of Light","11.7 Wave Nature of Matter","11.8 Davisson and Germer Experiment"]],
+  ["12. Atoms", ["12.1 Introduction","12.2 Rutherford's Nuclear Model","12.3 Atomic Spectra","12.4 Bohr Model","12.5 Line Spectra of Hydrogen","12.6 De Broglie's Explanation"]],
+  ["13. Nuclei", ["13.1 Introduction","13.2 Atomic Masses and Composition","13.3 Size of the Nucleus","13.4 Mass-Energy and Binding Energy","13.5 Nuclear Force","13.6 Radioactivity","13.7 Nuclear Energy"]],
+  ["14. Semiconductor Electronics", ["14.1 Introduction","14.2 Classification of Materials","14.3 Intrinsic Semiconductor","14.4 Extrinsic Semiconductor","14.5 p-n Junction","14.6 Semiconductor Diode","14.7 Junction Diode as Rectifier","14.8 Special p-n Diodes","14.9 Junction Transistor","14.10 Digital Electronics","14.11 Integrated Circuits"]],
+  ["15. Communication Systems", ["15.1 Introduction","15.2 Elements of Communication","15.3 Basic Terminology","15.4 Bandwidth of Signals","15.5 Bandwidth of Transmission Medium","15.6 Propagation of EM Waves","15.7 Modulation","15.8 Amplitude Modulation","15.9 Production of AM Wave","15.10 Detection of AM Wave"]]
+ ]
+},
+"Chemistry": {
+ "Class 11": [
+  ["1. Some Basic Concepts of Chemistry", ["1.1 Importance of Chemistry","1.2 Nature of Matter","1.3 Properties and Measurement","1.4 Uncertainty in Measurement","1.5 Laws of Chemical Combinations","1.6 Dalton's Atomic Theory","1.7 Atomic and Molecular Masses","1.8 Mole Concept and Molar Masses","1.9 Percentage Composition","1.10 Stoichiometry"]],
+  ["2. Structure of Atom", ["2.1 Sub-atomic Particles","2.2 Atomic Models","2.3 Developments to Bohr's Model","2.4 Bohr's Model for Hydrogen","2.5 Towards Quantum Mechanical Model","2.6 Quantum Mechanical Model"]],
+  ["3. Classification of Elements and Periodicity", ["3.1 Why Classify Elements?","3.2 Genesis of Periodic Classification","3.3 Modern Periodic Law","3.4 Nomenclature >100","3.5 Electronic Configurations and Periodic Table","3.6 Types of Elements (s,p,d,f)","3.7 Periodic Trends"]],
+  ["4. Chemical Bonding and Molecular Structure", ["4.1 Kössel-Lewis Approach","4.2 Ionic Bond","4.3 Bond Parameters","4.4 VSEPR Theory","4.5 Valence Bond Theory","4.6 Hybridisation","4.7 Molecular Orbital Theory","4.8 Homonuclear Diatomic Molecules","4.9 Hydrogen Bonding"]],
+  ["5. States of Matter", ["5.1 Intermolecular Forces","5.2 Thermal Energy","5.3 Intermolecular vs Thermal Interactions","5.4 Gaseous State","5.5 Gas Laws","5.6 Ideal Gas Equation","5.7 Dalton's Law of Partial Pressures","5.8 Kinetic Molecular Theory","5.9 Real Gases","5.10 Liquefaction of Gases","5.11 Liquid State"]],
+  ["6. Chemical Thermodynamics", ["6.1 Thermodynamic Terms","6.2 Applications","6.3 Measurement of ΔU and ΔH","6.4 Enthalpy Change","6.5 Enthalpies of Reactions","6.6 Spontaneity","6.7 Gibbs Energy Change"]],
+  ["7. Equilibrium", ["7.1 Equilibrium in Physical Processes","7.2 Dynamic Equilibrium","7.3 Equilibrium Constant","7.4 Homogeneous Equilibria","7.5 Heterogeneous Equilibria","7.6 Applications","7.7 Le Chatelier's Principle","7.8 Ionic Equilibrium","7.9 Acids, Bases, Salts","7.10 pH Scale","7.11 Buffer Solutions","7.12 Solubility Equilibria"]],
+  ["8. Redox Reactions", ["8.1 Classical Idea","8.2 Electron Transfer","8.3 Oxidation Number","8.4 Balancing Redox Reactions","8.5 Electrode Processes"]],
+  ["9. Hydrogen", ["9.1 Position in Periodic Table","9.2 Dihydrogen","9.3 Preparation","9.4 Properties","9.5 Hydrides","9.6 Water","9.7 Hydrogen Peroxide","9.8 Heavy Water","9.9 Dihydrogen as Fuel"]],
+  ["10. The s-Block Elements", ["10.1 Alkali Metals","10.2 Compounds of Alkali Metals","10.3 Anomalous Lithium","10.4 Compounds of Sodium","10.5 Biological Importance Na/K","10.6 Alkaline Earth Metals","10.7 Compounds of Alkaline Earth Metals","10.8 Anomalous Beryllium","10.9 Compounds of Calcium","10.10 Biological Importance Mg/Ca"]],
+  ["11. p-Block Elements (13 & 14)", ["11.1 Boron Family","11.2 Trends/Anomalous Boron","11.3 Compounds of Boron","11.4 Uses of B and Al","11.5 Carbon Family","11.6 Trends/Anomalous Carbon","11.7 Allotropes of Carbon","11.8 Compounds of Carbon/Silicon"]],
+  ["12. Organic Chemistry Basics", ["12.1 General Introduction","12.2 Tetravalence of Carbon","12.3 Structural Representations","12.4 Classification","12.5 Nomenclature (IUPAC)","12.6 Isomerism","12.7 Reaction Mechanisms","12.8 Purification Methods","12.9 Qualitative Analysis","12.10 Quantitative Analysis"]],
+  ["13. Hydrocarbons", ["13.1 Classification","13.2 Alkanes","13.3 Alkenes","13.4 Alkynes","13.5 Aromatic Hydrocarbons","13.6 Carcinogenicity and Toxicity"]],
+  ["14. Environmental Chemistry", ["14.1 Environmental Pollution","14.2 Atmospheric Pollution","14.3 Water Pollution","14.4 Soil Pollution","14.5 Industrial Waste","14.6 Control Strategies","14.7 Green Chemistry"]]
+ ],
+ "Class 12": [
+  ["1. The Solid State", ["1.1 General Characteristics","1.2 Amorphous and Crystalline","1.3 Classification of Crystals","1.4 Crystal Lattices/Unit Cells","1.5 Atoms in a Unit Cell","1.6 Close Packed Structures","1.7 Packing Efficiency","1.8 Unit Cell Calculations","1.9 Imperfections in Solids","1.10 Electrical Properties","1.11 Magnetic Properties"]],
+  ["2. Solutions", ["2.1 Types of Solutions","2.2 Concentration of Solutions","2.3 Solubility","2.4 Vapour Pressure of Solutions","2.5 Colligative Properties","2.6 Abnormal Molar Masses"]],
+  ["3. Electrochemistry", ["3.1 Electrochemical Cells","3.2 Standard Electrode Potential","3.3 Nernst Equation","3.4 Conductance of Solutions","3.5 Electrolytic Cells","3.6 Batteries","3.7 Fuel Cells","3.8 Corrosion"]],
+  ["4. Chemical Kinetics", ["4.1 Rate of a Reaction","4.2 Factors Influencing Rate","4.3 Integrated Rate Equations","4.4 Pseudo First Order Reaction","4.5 Temperature Dependence","4.6 Collision Theory"]],
+  ["5. Surface Chemistry", ["5.1 Adsorption","5.2 Catalysis","5.3 Colloids","5.4 Emulsions","5.5 Colloids Around Us"]],
+  ["6. Isolation of Elements", ["6.1 Occurrence of Metals","6.2 Concentration of Ores","6.3 Extraction of Crude Metal","6.4 Thermodynamic Principles","6.5 Electrochemical Principles","6.6 Oxidation Reduction","6.7 Refining","6.8 Uses of Al, Cu, Zn, Fe"]],
+  ["7. p-Block Elements (15-18)", ["7.1 Group 15","7.2 Group 16","7.3 Group 17","7.4 Group 18"]],
+  ["8. d- and f-Block Elements", ["8.1 Position in Periodic Table","8.2 Electronic Configurations","8.3 General Properties","8.4 Compounds (K2Cr2O7, KMnO4)","8.5 Lanthanoids","8.6 Actinoids","8.7 Applications"]],
+  ["9. Coordination Compounds", ["9.1 Werner's Theory","9.2 Key Terms","9.3 Nomenclature","9.4 Isomerism","9.5 Bonding (VBT/CFT)","9.6 Metal Carbonyls","9.7 Applications"]],
+  ["10. Haloalkanes and Haloarenes", ["10.1 Classification","10.2 Nomenclature","10.3 Nature of C-X Bond","10.4 Preparation","10.5 Physical Properties","10.6 Chemical Reactions","10.7 Polyhalogen Compounds"]],
+  ["11. Alcohols, Phenols and Ethers", ["11.1 Classification","11.2 Nomenclature","11.3 Functional Groups","11.4 Alcohols and Phenols","11.5 Important Alcohols","11.6 Ethers"]],
+  ["12. Aldehydes, Ketones, Carboxylic Acids", ["12.1 Carbonyl Group","12.2 Preparation","12.3 Physical Properties","12.4 Chemical Reactions","12.5 Uses","12.6 Carboxyl Group","12.7 Preparation of Acids","12.8 Physical Properties","12.9 Chemical Reactions","12.10 Uses"]],
+  ["13. Amines", ["13.1 Structure","13.2 Classification","13.3 Nomenclature","13.4 Preparation","13.5 Physical Properties","13.6 Chemical Reactions","13.7 Diazonium Salts"]],
+  ["14. Biomolecules", ["14.1 Carbohydrates","14.2 Proteins","14.3 Enzymes","14.4 Vitamins","14.5 Nucleic Acids","14.6 Hormones"]],
+  ["15. Polymers", ["15.1 Classification","15.2 Polymerization Reactions","15.3 Molecular Mass of Polymers","15.4 Biodegradable Polymers","15.5 Commercial Polymers"]],
+  ["16. Chemistry in Everyday Life", ["16.1 Drugs and Classification","16.2 Drug-Target Interaction","16.3 Therapeutic Action","16.4 Chemicals in Food","16.5 Cleansing Agents"]]
+ ]
+},
+"Botany": {
+ "Class 11": [
+  ["1. The Living World", ["1.1 What is 'Living'?","1.2 Diversity in the Living World","1.3 Taxonomic Categories","1.4 Taxonomical Aids"]],
+  ["2. Biological Classification", ["2.1 Kingdom Monera","2.2 Kingdom Protista","2.3 Kingdom Fungi","2.4 Kingdom Plantae","2.5 Viruses, Viroids, Lichens"]],
+  ["3. Plant Kingdom", ["3.1 Algae","3.2 Bryophytes","3.3 Pteridophytes","3.4 Gymnosperms","3.5 Angiosperms","3.6 Plant Life Cycles"]],
+  ["4. Morphology of Flowering Plants", ["4.1 The Root","4.2 The Stem","4.3 The Leaf","4.4 The Inflorescence","4.5 The Flower","4.6 The Fruit","4.7 The Seed","4.8 Semi-technical Description","4.9 Important Families"]],
+  ["5. Anatomy of Flowering Plants", ["5.1 The Tissues","5.2 The Tissue System","5.3 Anatomy of Dicot/Monocot","5.4 Secondary Growth"]],
+  ["6. Cell: The Unit of Life", ["6.1 What is a Cell? Cell Theory","6.2 Overview of Cell","6.3 Prokaryotic Cells","6.4 Eukaryotic Cells"]],
+  ["7. Cell Cycle and Cell Division", ["7.1 Cell Cycle","7.2 M Phase (Mitosis)","7.3 Significance of Mitosis","7.4 Meiosis"]],
+  ["8. Transport in Plants", ["8.1 Means of Transport","8.2 Plant-Water Relations","8.3 Long Distance Water Transport","8.4 Transpiration","8.5 Mineral Nutrient Transport","8.6 Phloem Transport"]],
+  ["9. Mineral Nutrition", ["9.1 Studying Mineral Requirements","9.2 Essential Mineral Elements","9.3 Mechanism of Absorption","9.4 Translocation of Solutes","9.5 Soil as Reservoir","9.6 Metabolism of Nitrogen"]],
+  ["10. Photosynthesis in Higher Plants", ["10.1 Early Experiments","10.2 Where Photosynthesis Occurs","10.3 Pigments Involved","10.4 Light Reaction","10.5 Electron Transport","10.6 Calvin Cycle","10.7 C4 Pathway","10.8 Photorespiration","10.9 Factors Affecting Photosynthesis"]],
+  ["11. Respiration in Plants", ["11.1 Do Plants Breathe?","11.2 Glycolysis","11.3 Fermentation","11.4 Aerobic Respiration (Krebs)","11.5 Electron Transport System","11.6 Respiratory Balance Sheet","11.7 Amphibolic Pathway","11.8 Respiratory Quotient"]],
+  ["12. Plant Growth and Development", ["12.1 Growth","12.2 Differentiation/Dedifferentiation","12.3 Development","12.4 Plant Growth Regulators","12.5 Photoperiodism","12.6 Vernalisation","12.7 Seed Dormancy"]]
+ ],
+ "Class 12": [
+  ["1. Reproduction in Organisms (Plant)", ["1.1 Asexual Reproduction","1.2 Sexual Reproduction"]],
+  ["2. Sexual Reproduction in Flowering Plants", ["2.1 The Flower","2.2 Pre-fertilisation Events","2.3 Double Fertilisation","2.4 Post-fertilisation Events","2.5 Apomixis and Polyembryony"]],
+  ["3. Principles of Inheritance and Variation", ["3.1 Mendel's Laws","3.2 Inheritance of One Gene","3.3 Inheritance of Two Genes","3.4 Linkage and Recombination","3.5 Polygenic Inheritance"]],
+  ["4. Molecular Basis of Inheritance", ["4.1 The DNA","4.2 Search for Genetic Material","4.3 RNA World","4.4 Replication","4.5 Transcription","4.6 Genetic Code","4.7 Translation","4.8 Gene Expression Regulation","4.9 Human Genome Project","4.10 DNA Fingerprinting"]],
+  ["5. Food Production Enhancement (Plant Breeding)", ["5.1 Plant Breeding","5.2 Biofortification","5.3 Single Cell Protein","5.4 Tissue Culture"]],
+  ["6. Microbes in Human Welfare", ["6.1 Household Products","6.2 Industrial Products","6.3 Sewage Treatment","6.4 Biogas Production","6.5 Biocontrol Agents","6.6 Biofertilisers"]],
+  ["7. Biotechnology: Principles and Processes", ["7.1 Principles","7.2 Tools of rDNA Tech","7.3 Processes of rDNA Tech"]],
+  ["8. Biotechnology and its Applications", ["8.1 Applications in Agriculture","8.2 Applications in Medicine","8.3 Transgenic Animals","8.4 Ethical Issues"]],
+  ["9. Organisms and Populations", ["9.1 Organism and Environment","9.2 Populations"]],
+  ["10. Ecosystem", ["10.1 Structure and Function","10.2 Productivity","10.3 Decomposition","10.4 Energy Flow","10.5 Ecological Pyramids","10.6 Ecological Succession","10.7 Nutrient Cycling","10.8 Ecosystem Services"]],
+  ["11. Biodiversity and Conservation", ["11.1 Biodiversity","11.2 Loss of Biodiversity","11.3 Biodiversity Conservation"]],
+  ["12. Environmental Issues", ["12.1 Air Pollution","12.2 Water Pollution","12.3 Solid Wastes","12.4 Agrochemicals","12.5 Radioactive Wastes","12.6 Greenhouse Effect","12.7 Ozone Depletion","12.8 Resource Degradation","12.9 Deforestation"]]
+ ]
+},
+"Zoology": {
+ "Class 11": [
+  ["1. Animal Kingdom", ["1.1 Basis of Classification","1.2 Classification of Animals"]],
+  ["2. Structural Organisation in Animals", ["2.1 Animal Tissues","2.2 Organ and Organ System","2.3 Earthworm","2.4 Cockroach","2.5 Frogs"]],
+  ["3. Biomolecules", ["3.1 Chemical Composition","3.2 Metabolites","3.3 Biomacromolecules","3.4 Proteins","3.5 Polysaccharides","3.6 Nucleic Acids","3.7 Structure of Proteins","3.8 Bonds Linking Monomers","3.9 Concept of Metabolism","3.10 Metabolic Basis for Living","3.11 The Living State","3.12 Enzymes"]],
+  ["4. Digestion and Absorption", ["4.1 Digestive System","4.2 Digestion of Food","4.3 Absorption of Products","4.4 Disorders"]],
+  ["5. Breathing and Exchange of Gases", ["5.1 Respiratory Organs","5.2 Mechanism of Breathing","5.3 Exchange of Gases","5.4 Transport of Gases","5.5 Regulation of Respiration","5.6 Disorders"]],
+  ["6. Body Fluids and Circulation", ["6.1 Blood","6.2 Lymph","6.3 Circulatory Pathways","6.4 Human Circulatory System","6.5 ECG","6.6 Double Circulation","6.7 Regulation of Cardiac Activity","6.8 Disorders"]],
+  ["7. Excretory Products and their Elimination", ["7.1 Human Excretory System","7.2 Urine Formation","7.3 Function of Tubules","7.4 Concentration of Filtrate","7.5 Regulation of Kidney Function","7.6 Micturition","7.7 Other Excretory Organs","7.8 Disorders"]],
+  ["8. Locomotion and Movement", ["8.1 Types of Movement","8.2 Muscle","8.3 Muscle Contraction","8.4 Skeletal System","8.5 Joints","8.6 Disorders"]],
+  ["9. Neural Control and Coordination", ["9.1 Neural System","9.2 Human Neural System","9.3 Neuron","9.4 Central Nervous System","9.5 Reflex Action","9.6 Sensory Reception (Eye/Ear)"]],
+  ["10. Chemical Coordination and Integration", ["10.1 Endocrine Glands and Hormones","10.2 Human Endocrine System","10.3 Hormones of Heart/Kidney/GIT","10.4 Mechanism of Hormone Action"]]
+ ],
+ "Class 12": [
+  ["1. Reproduction in Organisms (Animal)", ["1.1 Asexual Reproduction in Animals","1.2 Sexual Reproduction in Animals"]],
+  ["2. Human Reproduction", ["2.1 Male Reproductive System","2.2 Female Reproductive System","2.3 Gametogenesis","2.4 Menstrual Cycle","2.5 Fertilisation and Implantation","2.6 Pregnancy and Embryonic Development","2.7 Parturition and Lactation"]],
+  ["3. Reproductive Health", ["3.1 Problems and Strategies","3.2 Birth Control","3.3 MTP","3.4 STIs","3.5 Infertility and ART"]],
+  ["4. Principles of Inheritance and Variation (Human)", ["4.1 Sex Determination","4.2 Mutation","4.3 Pedigree Analysis","4.4 Mendelian Disorders","4.5 Chromosomal Disorders"]],
+  ["5. Evolution", ["5.1 Origin of Life","5.2 Evolution of Life Forms","5.3 Evidences for Evolution","5.4 Adaptive Radiation","5.5 Biological Evolution","5.6 Mechanism of Evolution","5.7 Hardy-Weinberg Principle","5.8 Account of Evolution","5.9 Origin and Evolution of Man"]],
+  ["6. Human Health and Disease", ["6.1 Common Diseases","6.2 Immunity","6.3 AIDS","6.4 Cancer","6.5 Drugs and Alcohol Abuse"]],
+  ["7. Food Production Enhancement (Animal Husbandry)", ["7.1 Animal Husbandry","7.2 Beekeeping","7.3 Fisheries"]]
+ ]
+}
+};
+const SUBJ_COLOR = {Physics:'#8C7CF0', Chemistry:'#4FC1A6', Botany:'#7CC26B', Zoology:'#E8A33D'};
+
+const QUOTES = [
+["The mind that reviews calmly retains more than the mind that crams anxiously.","stillness"],
+["धैर्य वह जड़ है जिससे सफलता का वृक्ष खड़ा रहता है।","patience"],
+["Every topic you revisit today is a debt you're not paying with interest tomorrow.","discipline"],
+["Decisions made in stillness are rarely the ones you regret.","decision-making"],
+["ध्यान का अर्थ है वर्तमान क्षण में पूरी तरह उपस्थित होना।","stillness"],
+["A slow, consistent hand beats a fast, tired one over a year.","patience"],
+["Real wealth is the ability to sit still with an unfinished task and not panic.","inner wealth"],
+["You don't rise to the level of your goals, you fall to the level of your systems.","systems"],
+["The aspirant who rests without guilt studies tomorrow with a clearer mind.","rest"],
+["सफलता की जड़ें अंधेरे में ही मजबूत होती हैं, जहाँ कोई देख नहीं रहा।","quiet effort"],
+["Forgetting is not failure — it's data telling you exactly when to return.","growth mindset"],
+["The exam rewards the calm recall, not the panicked cram.","composure"],
+["धैर्य रखने वाला व्यक्ति ही समय के फल का सही स्वाद चख पाता है।","patience"],
+["Clarity comes after action, rarely before it — start the next card.","momentum"],
+["Your future self is built entirely from today's ordinary, unglamorous repetitions.","discipline"],
+["एक स्थिर मन वही याद रखता है, जो एक अशांत मन सौ बार पढ़कर भी खो देता है।","focus"],
+["You are not behind. You are exactly as far as your last honest effort took you.","self-compassion"],
+["जो आज थोड़ा दोहराता है, वह कल पूरी तरह भूलने से बच जाता है।","spaced practice"],
+["Rest is not the opposite of progress — untracked effort is.","rest"],
+["Wealth, health, and knowledge all compound the same way: quietly, then suddenly.","compounding"],
+["सच्चा आत्मविश्वास तैयारियों से आता है, दावों से नहीं।","preparation"],
+["A single calm, focused hour outperforms three distracted ones.","focus"],
+["समय किसी का इंतज़ार नहीं करता, पर अनुशासन समय को भी झुका देता है।","discipline"],
+["Choose the boring, repeatable habit over the exciting, unsustainable sprint.","sustainability"],
+["मौन में लिए गए फैसले, शोर में लिए गए फैसलों से अधिक टिकाऊ होते हैं।","decision-making"],
+["Confidence is just competence you've reviewed enough times to trust.","preparation"],
+["Perfection in one sitting is a trap. Imperfect and consistent always wins.","patience"],
+["Put the blinders on — the adjacent topic will get its own turn.","focus"],
+["Discipline is freedom from guilt: do what you decided, and trust yourself more each day.","discipline"],
+["Be like ink in water — absorb the exact droplet in front of you, then move on.","stillness"]
+];
+
+/* PRIMARY = user's own real method. SECONDARY = earlier general reference, tap to reveal. */
+const REVIEW_SLOTS = [
+ {day:1,  label:"Day 1 — Self Recall", primary:"Recall on your own — no external material. Close everything, reconstruct it from memory first.",
+   secondary:"Close the notes. Look only at subheadings/keywords, then recite core mechanisms, formulas & definitions from memory. Open notes only to patch gaps."},
+ {day:3,  label:"Day 3 — Self Recall", primary:"Same as Day 1 — recall on your own, no external material. This is your second unaided check.",
+   secondary:"Glance at subheadings only. Run a fast 3-minute mental sweep of the concepts and mechanisms — no writing needed."},
+ {day:7,  label:"Day 7 — Mock / Hard Set", primary:"A JEE-level mock, or #NB2, or the hard NEETprep/GOTS/notes-marked questions for this topic.",
+   secondary:"Go straight to 10 fresh questions from the bank. Stuck on one? Patch only that exact subtopic from notes, then move on — blinders on."},
+ {day:21, label:"Day 21–30 — Q-Bank Sweep", primary:"Q-bank practice equivalent to your Oct–Nov set. Don't do nearby/adjacent chapters first — this one only.",
+   secondary:"5 HOTS/multi-concept + 5 Assertion-Reason/statement + 5 high-yield PYQ-style. Below 70%? Run a 10-question micro-drill on just the failing subtopic."},
+ {day:60, label:"Day 60 — Coaching Minor/RTS", primary:"Covered by coaching's Minor / RTS test for this topic.",
+   secondary:"Red/green triage on your flashcards, or another 15-Q anchor check, or a 2-minute keyword sweep — whichever the day allows."},
+ {day:180,label:"Day 180+ — Coaching Feb GOTS", primary:"Covered by coaching's Feb GOTS full test series.",
+   secondary:"Attempt a self-test/mock first. Diagnose the errors, patch only the exact gaps, then a quick page-flip visual sweep before the real mock."}
+];
+
+const RANKS = [
+ {min:0,name:"Rookie",ic:"🔹"},{min:150,name:"Bronze",ic:"🥉"},{min:400,name:"Silver",ic:"🥈"},
+ {min:800,name:"Gold",ic:"🥇"},{min:1400,name:"Platinum",ic:"💠"},{min:2200,name:"Diamond",ic:"💎"},
+ {min:3200,name:"Elite",ic:"⚡"},{min:4500,name:"Master",ic:"🔱"},{min:6200,name:"Grandmaster",ic:"👑"},{min:8500,name:"Legend",ic:"🌟"}
+];
+const BUILTIN_METHOD_TAGS = ["Active Recall","Blurting","Flashcards","Q-Bank","Mock Test","Trigger Sheet"];
+const MANUAL_STATUSES = ["Fresh","Hazy","Fading","High Risk"];
+const STATUS_COLORS = {Fresh:'var(--teal)', Hazy:'var(--yellow)', Fading:'var(--orange)', 'High Risk':'var(--rose)'};
+const FORGET_REASONS = [
+ {id:'rushed', label:'Rushed first pass'},
+ {id:'conceptual', label:'Conceptual gap'},
+ {id:'volume', label:'Just volume'}
+];
+
+/* ============ STATE ============ */
+const DEFAULT_HOME_SLABS = [
+  {id:'missed', built:'missed', name:'Missed', icon:'↺'},
+  {id:'ready', built:'ready', name:'Ready to review', icon:'🌱'},
+  {id:'upcoming', built:'upcoming', name:'Coming up', icon:'🌤️'}
+];
+let db = { topics:[], settings:{
+    intervals:[1,3,7,21,60,180], xp:0, streak:0, lastCompletedDate:null, totalReviews:0, lastQuoteIdx:-1,
+    spotlight:"", slotInstructions:{}, comboCount:0, chestsEarned:0, countdowns:[], customMethods:[],
+    homeSlabs: DEFAULT_HOME_SLABS.map(s=>({...s})),
+    googleClientId:'', driveFileId:null, driveLastBackup:null
+  }, scoreBooster:{}, chapterMeta:{}, badgesSeen:[], notifiedToday:{} };
+let slabOpenState = {};
+let googleTokenClient=null, googleAccessToken=null;
+let calMonth = new Date(); calMonth.setDate(1);
+let selectedCalDay = null;
+let pickerChoice = null;
+let explorerFilter = { subject:'Physics', cls:'All', status:'All', selectedChapter:null, selectedTopicId:null };
+let forestSubj = 'Physics';
+let pendingAttachments = [];
+
+/* ============ storage ============ */
+/* Hybrid storage: uses Claude's window.storage when running inside a Claude artifact,
+   falls back to localStorage when self-hosted outside Claude (e.g. as index.html on your own site). */
+async function storageGet(key){
+  if(window.storage){ try{ const r=await window.storage.get(key); return r? r.value : null; }catch(e){ return null; } }
+  try{ return localStorage.getItem('rm_'+key); }catch(e){ return null; }
+}
+async function storageSet(key, value){
+  if(window.storage){ try{ await window.storage.set(key, value); return true; }catch(e){ return false; } }
+  try{ localStorage.setItem('rm_'+key, value); return true; }catch(e){ return false; }
+}
+async function loadDB(){
+  try{ const t=await storageGet('topics'); if(t) db.topics=JSON.parse(t);}catch(e){}
+  try{ const s=await storageGet('settings'); if(s) db.settings=Object.assign(db.settings, JSON.parse(s));}catch(e){}
+  try{ const sb=await storageGet('scoreBooster'); if(sb) db.scoreBooster=JSON.parse(sb);}catch(e){}
+  try{ const cm=await storageGet('chapterMeta'); if(cm) db.chapterMeta=JSON.parse(cm);}catch(e){}
+  try{ const bs=await storageGet('badgesSeen'); if(bs) db.badgesSeen=JSON.parse(bs);}catch(e){}
+}
+async function saveTopics(){ const ok=await storageSet('topics', JSON.stringify(db.topics)); if(!ok) toast('Storage error — not saved'); }
+async function saveSettings(){ await storageSet('settings', JSON.stringify(db.settings)); }
+async function saveSB(){ await storageSet('scoreBooster', JSON.stringify(db.scoreBooster)); }
+async function saveChapterMeta(){ await storageSet('chapterMeta', JSON.stringify(db.chapterMeta)); }
+async function saveBadgesSeen(){ await storageSet('badgesSeen', JSON.stringify(db.badgesSeen)); }
+
+/* ============ helpers ============ */
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+function addDays(d,n){ const x=new Date(d+'T00:00:00'); x.setDate(x.getDate()+n); return x.toISOString().slice(0,10); }
+function fmtDate(d){ return new Date(d+'T00:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'}); }
+function fmtDateFull(d){ return new Date(d+'T00:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}); }
+function daysBetween(a,b){ return Math.round((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/86400000); }
+function escapeHtml(s){ return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function toast(msg,ms=2600,cls){ const w=document.getElementById('toast-wrap'); const el=document.createElement('div'); el.className='toast'+(cls?(' '+cls):''); el.textContent=msg; w.appendChild(el); setTimeout(()=>{el.style.transition='opacity .3s';el.style.opacity='0';setTimeout(()=>el.remove(),300);},ms); }
+function subjColor(n){ return SUBJ_COLOR[n]||'#8A93A8'; }
+function topicKey(s,c,t){ return s+'|||'+c+'|||'+t; }
+function chapterKey(s,c){ return s+'|||'+c; }
+function findTopicByKey(k){ return db.topics.find(t=>t.syllabusKey===k); }
+function nextReview(t){ return t.reviews.find(r=>!r.done)||null; }
+function repProgress(t){ return `${t.reviews.filter(r=>r.done).length}/${t.reviews.length}`; }
+function allMethodTags(){ return BUILTIN_METHOD_TAGS.concat(db.settings.customMethods||[]); }
+
+/* ============ SPOTLIGHT + QUOTE ============ */
+function renderSpotlight(){ document.getElementById('spotlightText').textContent = db.settings.spotlight || "Tap edit to write your own note, mantra, or instruction here."; }
+document.getElementById('spotlightEditBtn').onclick = ()=>{
+  const txt=document.getElementById('spotlightText'), inp=document.getElementById('spotlightInput'), btn=document.getElementById('spotlightEditBtn');
+  if(inp.style.display==='none'){ inp.value=db.settings.spotlight||''; inp.style.display='block'; txt.style.display='none'; btn.textContent='save'; }
+  else{ db.settings.spotlight=inp.value.trim(); saveSettings(); inp.style.display='none'; txt.style.display='block'; btn.textContent='edit'; renderSpotlight(); }
+};
+function showQuote(forceNew){
+  let idx=db.settings.lastQuoteIdx;
+  if(!forceNew && idx!==undefined && idx!==null && idx>=0 && idx<QUOTES.length){
+    document.getElementById('quoteTag').textContent='"'+QUOTES[idx][0]+'"';
+    return;
+  }
+  let next;
+  do{ next=Math.floor(Math.random()*QUOTES.length); }while(next===idx && QUOTES.length>1);
+  db.settings.lastQuoteIdx=next; saveSettings();
+  document.getElementById('quoteTag').textContent='"'+QUOTES[next][0]+'"';
+}
+document.getElementById('quoteRefresh').onclick = ()=>showQuote(true);
+
+/* ============ RETENTION MODEL (fixed: true Ebbinghaus decay, resets per rep) ============ */
+function topicStability(t, uptoIndex){
+  // stability grows with each successful rep; tied to the scheduled gap so later reps decay slower
+  const done = t.reviews.filter(r=>r.done);
+  const idx = uptoIndex!==undefined ? uptoIndex : done.length;
+  if(idx<=0) return 1.4;
+  const gap = t.intervals[idx-1] - (idx>1? t.intervals[idx-2] : 0);
+  return Math.max(1.2, gap/1.1);
+}
+function topicRetentionNow(t){
+  const done=t.reviews.filter(r=>r.done);
+  const anchor = done.length? done[done.length-1].doneDate : t.createdAt;
+  const S = topicStability(t);
+  const tdays=Math.max(0, daysBetween(anchor, todayStr()));
+  return Math.exp(-tdays/S);
+}
+function retentionColor(r){ if(r===null||r===undefined) return 'var(--grey)'; if(r>=0.75) return 'var(--teal)'; if(r>=0.45) return 'var(--yellow)'; return 'var(--rose)'; }
+function retentionStatus(r){ if(r===null||r===undefined) return 'notstarted'; if(r>=0.75) return 'green'; if(r>=0.45) return 'yellow'; return 'red'; }
+function chapterRetention(subj,chapter){ const cls=db.topics.filter(t=>t.subject===subj&&t.chapter===chapter); if(!cls.length) return null; return Math.min(...cls.map(topicRetentionNow)); }
+function chapterSlabColor(subj,chapter){
+  const meta=db.chapterMeta[chapterKey(subj,chapter)]||{};
+  if(meta.manualStatus) return STATUS_COLORS[meta.manualStatus];
+  return retentionColor(chapterRetention(subj,chapter));
+}
+function chapterNextSlotLabel(subj,chapter){
+  const topics=db.topics.filter(t=>t.subject===subj&&t.chapter===chapter);
+  let best=null;
+  topics.forEach(t=>{ const r=nextReview(t); if(r && (!best || r.dueDate<best.dueDate)) best={dueDate:r.dueDate, idx:r.index, total:t.reviews.length}; });
+  if(!best) return topics.length? 'all reviews complete ✓' : null;
+  return `R${best.idx}/${best.total} · due ${fmtDate(best.dueDate)}`;
+}
+
+/* ============ RANK / BADGES ============ */
+function currentRank(xp){ let r=RANKS[0]; for(const x of RANKS){ if(xp>=x.min) r=x; } return r; }
+function renderRank(){
+  const r=currentRank(db.settings.xp);
+  document.getElementById('rankVal').textContent=r.ic+' '+r.name;
+  document.getElementById('streakVal').textContent=db.settings.streak;
+  document.getElementById('rankPillBtn').classList.toggle('glow', db.settings.streak>0);
+}
+document.getElementById('rankPillBtn').onclick = openRankLadder;
+function openRankLadder(){
+  const xp=db.settings.xp; const body=document.getElementById('rankSheetBody'); body.innerHTML='';
+  RANKS.forEach((r,i)=>{
+    const cur = xp>=r.min && (i===RANKS.length-1 || xp<RANKS[i+1].min);
+    const unlocked = xp>=r.min;
+    const el=document.createElement('div'); el.className='card'; el.style.cssText='display:flex;justify-content:space-between;align-items:center;'+(cur?'border-color:var(--amber);box-shadow:0 0 14px rgba(232,163,61,.35);':'')+(unlocked?'':'opacity:.4;');
+    el.innerHTML=`<div><div style="font-family:'Space Grotesk',sans-serif;font-weight:700;">${r.ic} ${r.name}</div><div style="font-size:11px;color:var(--muted);">${r.min} XP required</div></div>${cur?'<span class="status-chip" style="background:var(--amber-dim);color:var(--amber);">current</span>':(unlocked?'<span style="color:var(--teal);">✓</span>':'')}`;
+    body.appendChild(el);
+  });
+  document.getElementById('rankBackdrop').classList.add('show');
+}
+document.getElementById('rankSheetClose').onclick=()=>document.getElementById('rankBackdrop').classList.remove('show');
+document.getElementById('rankBackdrop').onclick=(e)=>{ if(e.target.id==='rankBackdrop') e.currentTarget.classList.remove('show'); };
+
+const BADGE_DEFS = [
+ {id:'spark', ic:'✨', name:'First Spark', check:d=>d.settings.totalReviews>=1},
+ {id:'flame3', ic:'🔥', name:'3-Day Flame', check:d=>d.settings.streak>=3},
+ {id:'flame7', ic:'🔥', name:'7-Day Flame', check:d=>d.settings.streak>=7},
+ {id:'flame21', ic:'🔥', name:'21-Day Flame', check:d=>d.settings.streak>=21},
+ {id:'flame60', ic:'🔥', name:'60-Day Flame', check:d=>d.settings.streak>=60},
+ {id:'c50', ic:'💯', name:'50 Reviews', check:d=>d.settings.totalReviews>=50},
+ {id:'c200', ic:'🏆', name:'200 Reviews', check:d=>d.settings.totalReviews>=200},
+ {id:'c500', ic:'👑', name:'500 Reviews', check:d=>d.settings.totalReviews>=500},
+ {id:'topics20', ic:'📚', name:'20 Topics Logged', check:d=>d.topics.length>=20},
+ {id:'topics75', ic:'📖', name:'75 Topics Logged', check:d=>d.topics.length>=75},
+ {id:'anchor10', ic:'⚓', name:'10 Anchor Checks', check:d=>d.topics.reduce((n,t)=>n+t.reviews.filter(r=>r.done&&r.index===4).length,0)>=10},
+ {id:'forest10', ic:'🌳', name:'10 Trees Growing', check:d=>{const s=new Set(d.topics.map(t=>chapterKey(t.subject,t.chapter)));return s.size>=10;}},
+ {id:'chest5', ic:'🎁', name:'First Chest', check:d=>d.settings.chestsEarned>=1},
+ {id:'chest10', ic:'💰', name:'10 Chests Earned', check:d=>d.settings.chestsEarned>=10}
+];
+function computeBadges(){ return BADGE_DEFS.map(b=>({...b, unlocked:b.check(db)})); }
+function checkNewBadges(){
+  const now=computeBadges().filter(b=>b.unlocked).map(b=>b.id);
+  const newly=now.filter(id=>!db.badgesSeen.includes(id));
+  if(newly.length){ newly.forEach(id=>{ const b=BADGE_DEFS.find(x=>x.id===id); toast(`${b.ic} Badge unlocked: ${b.name}`,3200,'badge-toast'); }); db.badgesSeen=now; saveBadgesSeen(); }
+}
+function renderBadges(){
+  const wrap=document.getElementById('badgeGrid'); wrap.innerHTML='';
+  computeBadges().forEach(b=>{ const el=document.createElement('div'); el.className='badge'+(b.unlocked?' unlocked':''); el.innerHTML=`<div class="bic">${b.ic}</div><div class="bname">${b.name}</div>`; wrap.appendChild(el); });
+}
+
+/* ============ COUNTDOWNS (D-Day) ============ */
+function renderCountdowns(){
+  const row=document.getElementById('cdRow'); row.innerHTML='';
+  const sorted=(db.settings.countdowns||[]).slice().sort((a,b)=>a.date.localeCompare(b.date));
+  sorted.forEach(cd=>{
+    const days=daysBetween(todayStr(), cd.date);
+    const el=document.createElement('div'); el.className='cd-badge';
+    el.innerHTML=`<div class="cdn">${escapeHtml(cd.name)}</div><div class="cdd">${days>=0? days+'d left':'passed'}</div>`;
+    el.onclick=()=>editCountdown(cd.id);
+    row.appendChild(el);
+  });
+  const add=document.createElement('button'); add.className='cd-add'; add.textContent='+ add goal'; add.onclick=()=>editCountdown(null);
+  row.appendChild(add);
+}
+function editCountdown(id){
+  const cur = id ? (db.settings.countdowns||[]).find(c=>c.id===id) : {name:'',date:todayStr()};
+  openGenericModal(id?'Edit countdown':'New countdown', [
+    {type:'text', id:'name', label:'Goal name (e.g. NEET 2027)', value:cur.name, placeholder:'NEET 2027'},
+    {type:'date', id:'date', label:'Target date', value:cur.date}
+  ], (vals)=>{
+    if(!vals.name.trim()||!vals.date){ toast('Name and date both needed'); return; }
+    db.settings.countdowns = db.settings.countdowns||[];
+    if(id){ const c=db.settings.countdowns.find(x=>x.id===id); c.name=vals.name.trim(); c.date=vals.date; }
+    else{ db.settings.countdowns.push({id:'cd'+Date.now(), name:vals.name.trim(), date:vals.date}); }
+    saveSettings(); renderCountdowns(); renderCountdownManager(); toast('Countdown saved');
+  }, id? ()=>{ db.settings.countdowns=db.settings.countdowns.filter(c=>c.id!==id); saveSettings(); renderCountdowns(); renderCountdownManager(); toast('Countdown removed'); } : null);
+}
+function renderCountdownManager(){
+  const wrap=document.getElementById('countdownManager'); wrap.innerHTML='';
+  const list=db.settings.countdowns||[];
+  if(!list.length){ wrap.innerHTML=`<div style="font-size:12px;color:var(--muted);">No countdowns yet — add one from the home tab.</div>`; return; }
+  list.forEach(cd=>{
+    const days=daysBetween(todayStr(),cd.date);
+    const row=document.createElement('div'); row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);';
+    row.innerHTML=`<div><b>${escapeHtml(cd.name)}</b><div style="font-size:11px;color:var(--muted);">${fmtDateFull(cd.date)}</div></div><div class="mono" style="color:var(--amber);">${days>=0?days+'d':'passed'}</div>`;
+    row.onclick=()=>editCountdown(cd.id);
+    wrap.appendChild(row);
+  });
+}
+
+/* ============ TODAY: Missed / Ready / Upcoming ============ */
+/* ============ HOME SLABS (reorderable, custom-addable) ============ */
+function bucketOf(t){
+  const r=nextReview(t); if(!r) return null;
+  const ts=todayStr();
+  if(r.dueDate<ts) return 'missed';
+  if(r.dueDate===ts) return 'ready';
+  return 'upcoming';
+}
+function getSlabTopics(slab){
+  let list;
+  if(slab.built){
+    list = db.topics.filter(t=>bucketOf(t)===slab.built);
+  } else {
+    list = db.topics.filter(t=>{
+      const r=nextReview(t); if(!r) return false;
+      if(slab.filterKind==='subject') return t.subject===slab.filterValue;
+      if(slab.filterKind==='chapter') return chapterKey(t.subject,t.chapter)===slab.filterValue;
+      if(slab.filterKind==='stars') return (t.stars||0)>=parseInt(slab.filterValue);
+      if(slab.filterKind==='tag') return (t.customTags||[]).includes(slab.filterValue);
+      return false;
+    });
+  }
+  if(slab.built==='ready') list.sort((a,b)=>(a.priority??0)-(b.priority??0));
+  else list.sort((a,b)=>nextReview(a).dueDate.localeCompare(nextReview(b).dueDate));
+  return list;
+}
+function slabEmptyMsg(slab){
+  if(slab.built==='missed') return {b:'Nothing missed', t:"You're fully on pace."};
+  if(slab.built==='ready') return {b:'Nothing waiting 🎉', t:'Log a topic, or check what\'s coming up.'};
+  if(slab.built==='upcoming') return {b:'Nothing scheduled', t:'Log your first topic to start the timeline.'};
+  return {b:'Nothing here yet', t:'Nothing matches this section\'s filter right now.'};
+}
+function renderToday(){
+  const container=document.getElementById('slabsContainer'); container.innerHTML='';
+  const slabs = db.settings.homeSlabs && db.settings.homeSlabs.length ? db.settings.homeSlabs : DEFAULT_HOME_SLABS;
+  slabs.forEach(slab=>{
+    const list = getSlabTopics(slab);
+    const block=document.createElement('div'); block.className='slab-block'; block.dataset.id=slab.id;
+    const head=document.createElement('div'); head.className='toggle-head'+(slabOpenState[slab.id]?' open':'');
+    const sub = list.length? `${list.length} topic${list.length>1?'s':''}` : (slab.built? slabEmptyMsg(slab).t : 'nothing here yet');
+    head.innerHTML = `<span class="slab-handle">⠿</span>
+      <div class="th-left"><span>${slab.icon||'📌'}</span><div><div class="th-title">${escapeHtml(slab.name)}</div><div class="th-sub">${escapeHtml(sub)}</div></div></div>
+      ${slab.built?'':'<button class="slab-edit" type="button">✎</button>'}
+      <span class="th-arrow">▾</span>`;
+    const body=document.createElement('div'); body.className='toggle-body'+(slabOpenState[slab.id]?' show':'');
+    if(!list.length){ const m=slabEmptyMsg(slab); body.innerHTML=`<div class="empty"><b>${escapeHtml(m.b)}</b>${escapeHtml(m.t)}</div>`; }
+    else{ list.slice(0,60).forEach(t=> body.appendChild(taskEl(t, bucketOf(t)))); }
+    head.onclick=(e)=>{ if(e.target.classList.contains('slab-handle')||e.target.classList.contains('slab-edit')) return;
+      slabOpenState[slab.id]=!slabOpenState[slab.id]; head.classList.toggle('open'); body.classList.toggle('show'); };
+    if(!slab.built){ head.querySelector('.slab-edit').onclick=(e)=>{ e.stopPropagation(); editSlab(slab.id); }; }
+    block.appendChild(head); block.appendChild(body);
+    container.appendChild(block);
+    if(slab.built==='ready') enableReorder(body);
+  });
+  enableSlabReorder(container);
+}
+function enableSlabReorder(container){
+  let dragEl=null,startY=0,placeholder=null,items=[];
+  container.querySelectorAll('.slab-handle').forEach(h=>{
+    h.onpointerdown=(e)=>{ dragEl=h.closest('.slab-block'); dragEl.setPointerCapture(e.pointerId); startY=e.clientY; dragEl.classList.add('dragging');
+      placeholder=document.createElement('div'); placeholder.className='placeholder show'; dragEl.parentNode.insertBefore(placeholder, dragEl.nextSibling);
+      items=Array.from(container.querySelectorAll('.slab-block:not(.dragging)')); document.onpointermove=onMove; document.onpointerup=onUp; };
+  });
+  function onMove(e){ if(!dragEl) return; const dy=e.clientY-startY; dragEl.style.transform=`translateY(${dy}px)`;
+    const dr=dragEl.getBoundingClientRect(); const dm=dr.top+dr.height/2;
+    for(const it of items){ const r=it.getBoundingClientRect(); const mid=r.top+r.height/2;
+      if(dm<mid && it.previousSibling!==placeholder){ container.insertBefore(placeholder,it); break; }
+      else if(dm>=mid && it.nextSibling!==placeholder){ container.insertBefore(placeholder,it.nextSibling); } } }
+  function onUp(){ if(!dragEl) return; dragEl.style.transform=''; dragEl.classList.remove('dragging');
+    container.insertBefore(dragEl, placeholder); placeholder.remove(); document.onpointermove=null; document.onpointerup=null;
+    const ids=Array.from(container.querySelectorAll('.slab-block')).map(x=>x.dataset.id);
+    db.settings.homeSlabs = ids.map(id=> db.settings.homeSlabs.find(s=>s.id===id));
+    saveSettings(); dragEl=null; }
+}
+document.getElementById('addSlabBtn').onclick=()=>{
+  openGenericModal('New section', [
+    {type:'text', id:'name', label:'Section name', placeholder:'e.g. High-yield only'},
+    {type:'select', id:'kind', label:'Show topics where...', options:['By subject','By chapter','By minimum star rating','By custom tag']},
+    {type:'text', id:'val', label:'Value', placeholder:'e.g. Physics, or a chapter name, or 4, or a tag'}
+  ], (vals)=>{
+    if(!vals.name.trim()||!vals.val.trim()){ toast('Name and value both needed'); return; }
+    const kindMap={'By subject':'subject','By chapter':'chapter','By minimum star rating':'stars','By custom tag':'tag'};
+    let filterValue=vals.val.trim();
+    if(kindMap[vals.kind]==='chapter'){
+      // expects "Subject / Chapter Name"; fall back to raw text search against chapterKey suffix
+      const parts=filterValue.split('/').map(s=>s.trim());
+      if(parts.length===2) filterValue=chapterKey(parts[0],parts[1]);
+    }
+    db.settings.homeSlabs=db.settings.homeSlabs||DEFAULT_HOME_SLABS.map(s=>({...s}));
+    db.settings.homeSlabs.push({ id:'slab'+Date.now(), built:null, name:vals.name.trim(), icon:'📌', filterKind:kindMap[vals.kind], filterValue });
+    saveSettings(); toast('Section added'); renderToday();
+  });
+};
+function editSlab(id){
+  const slab=db.settings.homeSlabs.find(s=>s.id===id); if(!slab) return;
+  openGenericModal('Edit section', [
+    {type:'text', id:'name', label:'Section name', value:slab.name}
+  ], (vals)=>{
+    if(!vals.name.trim()) return;
+    slab.name=vals.name.trim(); saveSettings(); toast('Section updated'); renderToday();
+  }, ()=>{ db.settings.homeSlabs=db.settings.homeSlabs.filter(s=>s.id!==id); delete slabOpenState[id]; saveSettings(); toast('Section removed'); renderToday(); });
+}
+function taskEl(t, kind){
+  const r=nextReview(t);
+  const slot = REVIEW_SLOTS.find(s=>s.day===t.intervals[r.index-1]) || {label:`Review ${r.index}`};
+  const el=document.createElement('div');
+  el.className='task'+(kind==='ready'?' priority':'')+(kind==='missed'?' missed':'');
+  el.dataset.id=t.id;
+  const dots=t.reviews.map(rv=>`<span class="${rv.done?'dot filled':(rv===r?'dot current':'dot')}"></span>`).join('');
+  const stars = t.stars? '<span class="stars-mini">'+'★'.repeat(t.stars)+'</span>' : '';
+  el.innerHTML=`
+    <span class="handle">⠿</span>
+    <div class="task-main">
+      <div class="task-top">
+        <span class="tag" style="background:${subjColor(t.subject)}22;color:${subjColor(t.subject)};">${escapeHtml(t.subject)}</span>
+        <span class="time-chip">${kind==='missed'? 'since '+fmtDate(r.dueDate) : (kind==='ready'? fmtDate(r.dueDate)+' · '+t.time : fmtDate(r.dueDate)+' · '+t.time)}</span>
+        ${stars}
+      </div>
+      <div class="task-title">${escapeHtml(t.title)}</div>
+      <div class="task-meta"><span>${slot.label.split('—')[0].trim()}</span><span class="rep-dots">${dots}</span>${t.chapter?`<span>· ${escapeHtml(t.chapter)}</span>`:''}</div>
+    </div>
+    <div class="task-actions">
+      <button class="done-btn" title="Review this">✓</button>
+      <button class="snooze-btn">shift +1d</button>
+    </div>`;
+  el.querySelector('.task-main').onclick = ()=> openTopicDetail(t.id);
+  el.querySelector('.done-btn').onclick = (e)=>{ e.stopPropagation(); openReviewOutcomeModal(t.id, el); };
+  el.querySelector('.snooze-btn').onclick = (e)=>{ e.stopPropagation(); snoozeReview(t.id); };
+  return el;
+}
+/* ============ REVIEW OUTCOME (Forgot / Hazy / Solid) ============ */
+function openReviewOutcomeModal(id, el){
+  const t=db.topics.find(x=>x.id===id); if(!t) return;
+  const r=nextReview(t); if(!r) return;
+  const slot=REVIEW_SLOTS.find(s=>s.day===t.intervals[r.index-1]);
+  document.getElementById('modalTitle').textContent = 'How did it go?';
+  const body=document.getElementById('modalBody');
+  let chosen=null, reason=null;
+  body.innerHTML = `
+    <div style="font-size:12.5px;color:var(--muted);margin-bottom:4px;"><b style="color:var(--text);">${escapeHtml(t.title)}</b> — ${slot?slot.label:'Review '+r.index}</div>
+    <div style="font-size:11.5px;color:var(--muted);margin-bottom:10px;">${slot?escapeHtml(slot.primary):''}</div>
+    <div class="outcome-row">
+      <div class="outcome-btn" data-o="forgot"><div class="oic">😵</div><div class="olabel">Forgot</div><div class="osub">back tomorrow</div></div>
+      <div class="outcome-btn" data-o="hazy"><div class="oic">😐</div><div class="olabel">Hazy</div><div class="osub">back sooner</div></div>
+      <div class="outcome-btn" data-o="solid"><div class="oic">💪</div><div class="olabel">Solid</div><div class="osub">pushed further</div></div>
+    </div>
+    <div id="reasonWrap" style="display:none;">
+      <label style="margin-top:2px;">Why am I forgetting this?</label>
+      <div class="chip-row" id="reasonChips"></div>
+    </div>
+    <label>Minutes spent</label>
+    <input type="number" id="mf_mins" placeholder="e.g. 8">
+  `;
+  body.querySelectorAll('.outcome-btn').forEach(b=>{
+    b.onclick=()=>{
+      chosen=b.dataset.o;
+      body.querySelectorAll('.outcome-btn').forEach(x=>x.classList.remove('sel-forgot','sel-hazy','sel-solid'));
+      b.classList.add('sel-'+chosen);
+      document.getElementById('reasonWrap').style.display = chosen==='forgot' ? 'block':'none';
+      if(chosen==='forgot'){
+        const rc=document.getElementById('reasonChips'); rc.innerHTML='';
+        FORGET_REASONS.forEach(fr=>{ const c=document.createElement('div'); c.className='chip-opt'; c.textContent=fr.label;
+          c.onclick=()=>{ reason=fr.id; rc.querySelectorAll('.chip-opt').forEach(x=>x.classList.remove('sel')); c.classList.add('sel'); };
+          rc.appendChild(c); });
+      }
+    };
+  });
+  document.getElementById('modalBackdrop').classList.add('show');
+  document.getElementById('modalSave').onclick=()=>{
+    if(!chosen){ toast('Pick Forgot, Hazy, or Solid first'); return; }
+    if(chosen==='forgot' && !reason){ toast('Pick a reason — it builds your diagnostic report'); return; }
+    const mins = parseInt(document.getElementById('mf_mins').value)||null;
+    document.getElementById('modalBackdrop').classList.remove('show');
+    applyReviewOutcome(id, chosen, mins, reason, el);
+  };
+}
+async function applyReviewOutcome(id, outcome, minutes, reason, el){
+  const t=db.topics.find(x=>x.id===id); if(!t) return;
+  const r=nextReview(t); if(!r) return;
+  const ts=todayStr();
+  let xpGain=0;
+  if(outcome==='forgot'){
+    r.dueDate=addDays(ts,1); r.lastOutcome='forgot'; r.lastReason=reason; r.minutes=minutes;
+    t.forgotLog=t.forgotLog||[]; t.forgotLog.push({date:ts, repIndex:r.index, reason});
+    xpGain=3;
+  } else {
+    r.done=true; r.doneDate=ts; r.minutes=minutes; r.lastOutcome=outcome;
+    const nxt=nextReview(t);
+    if(outcome==='hazy' && nxt){
+      const gap=Math.max(1, daysBetween(r.doneDate, nxt.dueDate));
+      nxt.dueDate=addDays(r.doneDate, Math.max(1, Math.round(gap*0.55)));
+    }
+    xpGain = 12 + (r.index>=4?8:0);
+  }
+  const wasToday = db.settings.lastCompletedDate===ts;
+  if(!wasToday){ const wasYesterday=db.settings.lastCompletedDate===addDays(ts,-1); db.settings.streak = wasYesterday? db.settings.streak+1 : 1; db.settings.lastCompletedDate=ts; }
+  db.settings.xp += xpGain;
+  if(outcome!=='forgot') db.settings.totalReviews += 1;
+  db.settings.comboCount = (db.settings.comboCount||0)+1;
+  let chestEarned=false;
+  if(db.settings.comboCount % 5 === 0){ chestEarned=true; db.settings.chestsEarned=(db.settings.chestsEarned||0)+1; db.settings.xp+=15; }
+  await saveTopics(); await saveSettings();
+  if(el) el.classList.add('justdone');
+  if(outcome!=='forgot') burstConfetti();
+  const encourage = encouragingLine(db.settings.totalReviews);
+  toast(outcome==='forgot' ? `Logged — back on your list tomorrow. ${encourage}` : `${outcome==='solid'?'Solid ✓':'Reviewed ✓'} · +${xpGain} XP · ${encourage}`);
+  if(chestEarned){ setTimeout(()=>toast('🎁 Momentum chest! 5 reviews in a row — bonus +15 XP', 3400, 'chest-toast'), 500); }
+  checkNewBadges();
+  setTimeout(renderAll, 300);
+}
+function encouragingLine(n){
+  if(n<10) return "Building the habit.";
+  if(n<50) return "Solid pace — keep stacking these.";
+  if(n<150) return "You're deep in it now.";
+  return "This is what mastery pacing looks like.";
+}
+async function snoozeReview(id){ const t=db.topics.find(x=>x.id===id); const r=nextReview(t); if(!r) return; r.dueDate=addDays(todayStr(),1); await saveTopics(); toast('Shifted to tomorrow'); renderAll(); }
+
+/* ============ confetti ============ */
+function burstConfetti(){
+  const canvas=document.getElementById('confetti'); const ctx=canvas.getContext('2d');
+  canvas.width=innerWidth; canvas.height=innerHeight;
+  const colors=['#E8A33D','#4FC1A6','#8C7CF0','#E0C050'];
+  let particles=Array.from({length:34},()=>({x:innerWidth/2+(Math.random()-.5)*80,y:innerHeight*.35,vx:(Math.random()-.5)*7,vy:-Math.random()*6-3,g:.25,size:4+Math.random()*3,color:colors[Math.floor(Math.random()*colors.length)],life:58}));
+  function tick(){ ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{ p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.life--; ctx.globalAlpha=Math.max(0,p.life/58); ctx.fillStyle=p.color; ctx.fillRect(p.x,p.y,p.size,p.size); });
+    particles=particles.filter(p=>p.life>0);
+    if(particles.length) requestAnimationFrame(tick); else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  tick();
+}
+
+/* ============ reorder ============ */
+function enableReorder(listEl){
+  let dragEl=null,startY=0,placeholder=null,items=[];
+  listEl.querySelectorAll('.handle').forEach(h=>{
+    h.onpointerdown=(e)=>{ dragEl=h.closest('.task'); dragEl.setPointerCapture(e.pointerId); startY=e.clientY; dragEl.classList.add('dragging');
+      placeholder=document.createElement('div'); placeholder.className='placeholder show'; dragEl.parentNode.insertBefore(placeholder, dragEl.nextSibling);
+      items=Array.from(listEl.querySelectorAll('.task:not(.dragging)')); document.onpointermove=onMove; document.onpointerup=onUp; };
+  });
+  function onMove(e){ if(!dragEl) return; const dy=e.clientY-startY; dragEl.style.transform=`translateY(${dy}px)`;
+    const dr=dragEl.getBoundingClientRect(); const dm=dr.top+dr.height/2;
+    for(const it of items){ const r=it.getBoundingClientRect(); const mid=r.top+r.height/2;
+      if(dm<mid && it.previousSibling!==placeholder){ listEl.insertBefore(placeholder,it); break; }
+      else if(dm>=mid && it.nextSibling!==placeholder){ listEl.insertBefore(placeholder,it.nextSibling); } } }
+  async function onUp(){ if(!dragEl) return; dragEl.style.transform=''; dragEl.classList.remove('dragging');
+    listEl.insertBefore(dragEl, placeholder); placeholder.remove(); document.onpointermove=null; document.onpointerup=null;
+    const ids=Array.from(listEl.querySelectorAll('.task')).map(x=>x.dataset.id);
+    ids.forEach((id,i)=>{ const t=db.topics.find(x=>x.id===id); if(t) t.priority=i; });
+    await saveTopics(); dragEl=null; }
+}
+function enableTopicReorder(listEl, onReorder){
+  let dragEl=null,startY=0,placeholder=null,items=[];
+  listEl.querySelectorAll('.trhandle').forEach(h=>{
+    h.onpointerdown=(e)=>{ dragEl=h.closest('.topic-row'); dragEl.setPointerCapture(e.pointerId); startY=e.clientY; dragEl.classList.add('dragging');
+      placeholder=document.createElement('div'); placeholder.className='placeholder show'; dragEl.parentNode.insertBefore(placeholder, dragEl.nextSibling);
+      items=Array.from(listEl.querySelectorAll('.topic-row:not(.dragging)')); document.onpointermove=onMove; document.onpointerup=onUp; };
+  });
+  function onMove(e){ if(!dragEl) return; const dy=e.clientY-startY; dragEl.style.transform=`translateY(${dy}px)`;
+    const dr=dragEl.getBoundingClientRect(); const dm=dr.top+dr.height/2;
+    for(const it of items){ const r=it.getBoundingClientRect(); const mid=r.top+r.height/2;
+      if(dm<mid && it.previousSibling!==placeholder){ listEl.insertBefore(placeholder,it); break; }
+      else if(dm>=mid && it.nextSibling!==placeholder){ listEl.insertBefore(placeholder,it.nextSibling); } } }
+  function onUp(){ if(!dragEl) return; dragEl.style.transform=''; dragEl.classList.remove('dragging');
+    listEl.insertBefore(dragEl, placeholder); placeholder.remove(); document.onpointermove=null; document.onpointerup=null;
+    const ids=Array.from(listEl.querySelectorAll('.topic-row')).map(x=>x.dataset.id); onReorder(ids); dragEl=null; }
+}
+
+/* ============ GENERIC MODAL (supports optional delete callback) ============ */
+function openGenericModal(title, fields, onSave, onDelete){
+  document.getElementById('modalTitle').textContent=title;
+  const body=document.getElementById('modalBody'); body.innerHTML='';
+  fields.forEach(f=>{
+    if(f.type==='note'){ const d=document.createElement('div'); d.style.cssText='font-size:12.5px;color:var(--muted);margin-bottom:10px;line-height:1.4;'; d.textContent=f.text; body.appendChild(d); return; }
+    const wrap=document.createElement('div'); wrap.className='field-row';
+    const lab=document.createElement('label'); lab.textContent=f.label; lab.style.margin='2px 0 4px';
+    let input;
+    if(f.type==='textarea'){ input=document.createElement('textarea'); }
+    else if(f.type==='select'){ input=document.createElement('select'); (f.options||[]).forEach(o=>{ const op=document.createElement('option'); op.value=o; op.textContent=o; input.appendChild(op); }); }
+    else{ input=document.createElement('input'); input.type=f.type||'text'; }
+    input.id='mf_'+f.id; if(f.placeholder) input.placeholder=f.placeholder; if(f.value!==undefined) input.value=f.value;
+    wrap.appendChild(lab); wrap.appendChild(input); body.appendChild(wrap);
+  });
+  if(onDelete){ const delBtn=document.createElement('button'); delBtn.className='link-btn'; delBtn.style.color='var(--rose)'; delBtn.textContent='Remove this'; delBtn.style.marginTop='6px';
+    delBtn.onclick=()=>{ document.getElementById('modalBackdrop').classList.remove('show'); onDelete(); }; body.appendChild(delBtn); }
+  document.getElementById('modalBackdrop').classList.add('show');
+  document.getElementById('modalSave').onclick=()=>{
+    const vals={}; fields.forEach(f=>{ if(f.type!=='note'){ const el=document.getElementById('mf_'+f.id); vals[f.id]=el.value; } });
+    document.getElementById('modalBackdrop').classList.remove('show'); onSave(vals);
+  };
+}
+document.getElementById('modalClose').onclick=()=>document.getElementById('modalBackdrop').classList.remove('show');
+document.getElementById('modalBackdrop').onclick=(e)=>{ if(e.target.id==='modalBackdrop') e.currentTarget.classList.remove('show'); };
+
+/* ============ SYLLABUS PICKER (single topic OR whole chapter) ============ */
+function buildSubjTabs(container, active, onSel, colorFn){
+  container.innerHTML='';
+  Object.keys(SYLLABUS).forEach(s=>{ const b=document.createElement('div'); b.className='sub-tab'+(s===active?' sel':'');
+    if(s===active) b.style.background=(colorFn?colorFn(s):SUBJ_COLOR[s]); b.textContent=s; b.onclick=()=>onSel(s); container.appendChild(b); });
+}
+function openPickerSheet(){ document.getElementById('sheetTitle').textContent='Choose topic or chapter'; renderPickerSubj('Physics'); document.getElementById('sheetBackdrop').classList.add('show'); }
+function renderPickerSubj(subj){
+  buildSubjTabs(document.getElementById('sheetSubjTabs'), subj, renderPickerSubj);
+  const body=document.getElementById('sheetBody'); body.innerHTML='';
+  ['Class 11','Class 12'].forEach(cls=>{
+    const h=document.createElement('div'); h.className='section-title'; h.style.margin='12px 0 4px'; h.textContent=cls; body.appendChild(h);
+    SYLLABUS[subj][cls].forEach(([chapter,topics])=>{
+      const chRet=chapterRetention(subj,chapter);
+      const acc=document.createElement('div'); acc.className='acc-chapter';
+      acc.innerHTML=`<div class="acc-head"><div class="slab" style="background:${chapterSlabColor(subj,chapter)};"></div><div class="acc-title">${escapeHtml(chapter)}</div>
+        <button class="chip-tool" type="button">+ whole chapter</button><div class="acc-arrow">▾</div></div><div class="acc-body"></div>`;
+      const bulkBtn = acc.querySelector('.chip-tool');
+      bulkBtn.onclick=(e)=>{ e.stopPropagation(); confirmBulkAddChapter(subj,chapter,topics); };
+      acc.querySelector('.acc-head').onclick=(e)=>{ if(e.target===bulkBtn) return; acc.classList.toggle('open'); };
+      const bodyEl=acc.querySelector('.acc-body');
+      topics.forEach(topic=>{
+        const key=topicKey(subj,chapter,topic); const existing=findTopicByKey(key); const ret=existing?topicRetentionNow(existing):null;
+        const row=document.createElement('div'); row.className='topic-pick';
+        row.innerHTML=`<span class="tslab" style="background:${retentionColor(ret)};"></span><span>${escapeHtml(topic)}</span>`;
+        row.onclick=()=>{ pickerChoice={subject:subj,chapter,topic}; document.getElementById('pickerLabel').innerHTML=`<span style="color:var(--text);">${escapeHtml(subj)} › ${escapeHtml(chapter)} › ${escapeHtml(topic)}</span>`; document.getElementById('sheetBackdrop').classList.remove('show'); };
+        bodyEl.appendChild(row);
+      });
+      body.appendChild(acc);
+    });
+  });
+}
+document.getElementById('openPicker').onclick=openPickerSheet;
+document.getElementById('sheetClose').onclick=()=>document.getElementById('sheetBackdrop').classList.remove('show');
+document.getElementById('sheetBackdrop').onclick=(e)=>{ if(e.target.id==='sheetBackdrop') e.currentTarget.classList.remove('show'); };
+
+function confirmBulkAddChapter(subj,chapter,topics){
+  const newOnes = topics.filter(topic=>!findTopicByKey(topicKey(subj,chapter,topic)));
+  if(!newOnes.length){ toast('Every topic in this chapter is already logged'); return; }
+  openGenericModal(`Add whole chapter — ${chapter}`, [
+    {type:'note', text:`This adds ${newOnes.length} topic(s) from this chapter, each with its own review schedule starting today at 19:00. You can edit any of them individually afterward.`}
+  ], ()=>{
+    newOnes.forEach(topic=> createTopicRecord({title:topic, subject:subj, chapter, notes:'', time:'19:00', intervals:db.settings.intervals.slice()}) );
+    saveTopics(); saveSettings(); toast(`Added ${newOnes.length} topics from ${chapter}`); document.getElementById('sheetBackdrop').classList.remove('show'); switchView('today'); renderAll();
+  });
+}
+
+/* ============ shared topic creation ============ */
+function createTopicRecord({title,subject,chapter,notes,time,intervals,attachments}){
+  const ts=todayStr();
+  const reviews=intervals.map((off,i)=>({index:i+1,dueDate:addDays(ts,off),done:false,doneDate:null,minutes:null,lastOutcome:null,lastReason:null}));
+  const maxP=db.topics.reduce((m,t)=>Math.max(m,t.priority??0),-1);
+  const topic={ id:'t'+Date.now()+Math.random().toString(36).slice(2,6), title, subject, chapter, notes:notes||'',
+    syllabusKey: chapter?topicKey(subject,chapter,title):null, attachments:attachments||[],
+    createdAt:ts, time:time||'19:00', intervals:intervals.slice(), reviews, priority:maxP+1,
+    stars:0, customTags:[], forgotLog:[], duration:null };
+  db.topics.push(topic);
+  db.settings.xp += 5;
+  return topic;
+}
+
+/* ============ LOG tab actions ============ */
+document.getElementById('attachBtn').onclick=()=>document.getElementById('inImage').click();
+document.getElementById('inImage').onchange=(e)=>{
+  Array.from(e.target.files).forEach(file=>{
+    const img=new Image(); const reader=new FileReader();
+    reader.onload=ev=>{ img.onload=()=>{ const canvas=document.createElement('canvas'); const max=600; const scale=Math.min(1,max/Math.max(img.width,img.height));
+      canvas.width=img.width*scale; canvas.height=img.height*scale; canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+      pendingAttachments.push(canvas.toDataURL('image/jpeg',.7)); renderAttachPreview(); };
+      img.src=ev.target.result; };
+    reader.readAsDataURL(file);
+  }); e.target.value='';
+};
+function renderAttachPreview(){
+  const wrap=document.getElementById('attachPreview'); wrap.innerHTML='';
+  pendingAttachments.forEach((src,i)=>{ const d=document.createElement('div'); d.className='thumb-wrap';
+    d.innerHTML=`<img class="thumb" src="${src}"><span class="thumb-x">×</span>`;
+    d.querySelector('.thumb-x').onclick=()=>{ pendingAttachments.splice(i,1); renderAttachPreview(); }; wrap.appendChild(d); });
+}
+let recog=null;
+function initSpeech(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){ document.getElementById('micHint').textContent='Voice input not supported here'; document.getElementById('micBtn').disabled=true; return; }
+  recog=new SR(); recog.continuous=false; recog.interimResults=false; recog.lang='en-IN';
+  recog.onresult=(e)=>{ const text=e.results[0][0].transcript; const ta=document.getElementById('inNotes'); ta.value=(ta.value?ta.value+' ':'')+text; };
+  recog.onend=()=>{ document.getElementById('micBtn').classList.remove('live'); document.getElementById('micHint').textContent='Tap to dictate'; };
+  recog.onerror=()=>{ document.getElementById('micBtn').classList.remove('live'); toast('Voice input error'); };
+}
+document.getElementById('micBtn').onclick=()=>{
+  if(!recog) return;
+  if(document.getElementById('micBtn').classList.contains('live')){ recog.stop(); return; }
+  document.getElementById('micBtn').classList.add('live'); document.getElementById('micHint').textContent='Listening...';
+  try{ recog.start(); }catch(e){}
+};
+document.getElementById('saveTopicBtn').onclick=async ()=>{
+  let title,subject,chapter=null;
+  const custom=document.getElementById('inTitle').value.trim();
+  if(pickerChoice){ title=pickerChoice.topic; subject=pickerChoice.subject; chapter=pickerChoice.chapter; }
+  else if(custom){ title=custom; subject='Other'; }
+  else{ toast('Pick a syllabus topic/chapter or type a custom one'); return; }
+  const notes=document.getElementById('inNotes').value.trim();
+  const time=document.getElementById('inTime').value||'19:00';
+  createTopicRecord({title,subject,chapter,notes,time,intervals:db.settings.intervals,attachments:pendingAttachments.slice()});
+  await saveTopics(); await saveSettings();
+  toast(`"${title}" logged`);
+  document.getElementById('inTitle').value=''; document.getElementById('inNotes').value='';
+  document.getElementById('pickerLabel').innerHTML='Tap to choose Subject → Chapter → Topic';
+  pickerChoice=null; pendingAttachments=[]; renderAttachPreview();
+  switchView('today'); renderAll();
+};
+
+/* ============ ADVANCED TASK SETUP ============ */
+document.getElementById('openAdvancedTask').onclick=()=>{
+  const fields = [
+    {type:'text', id:'name', label:'Task name', placeholder:'e.g. Chapter 9 error log'},
+    {type:'textarea', id:'desc', label:'Description', placeholder:'Add note...'},
+    {type:'select', id:'subject', label:'Subject', options:Object.keys(SYLLABUS).concat(['Other']), value:'Physics'},
+    {type:'date', id:'startDate', label:'Start date', value:todayStr()},
+    {type:'number', id:'duration', label:'Estimated duration (minutes)', placeholder:'e.g. 20'},
+    {type:'time', id:'reminder', label:'Reminder time', value:'19:00'}
+  ];
+  db.settings.intervals.forEach((v,i)=> fields.push({type:'number', id:'iv'+i, label:`Review ${i+1} — days after start`, value:v}));
+  openGenericModal('Advanced task setup', fields, (vals)=>{
+    if(!vals.name.trim()){ toast('Give the task a name'); return; }
+    const intervals = db.settings.intervals.map((v,i)=> parseInt(vals['iv'+i])||v);
+    const ts = vals.startDate || todayStr();
+    const reviews = intervals.map((off,i)=>({index:i+1,dueDate:addDays(ts,off),done:false,doneDate:null,minutes:null,lastOutcome:null,lastReason:null}));
+    const maxP=db.topics.reduce((m,t)=>Math.max(m,t.priority??0),-1);
+    const topic={ id:'t'+Date.now()+Math.random().toString(36).slice(2,6), title:vals.name.trim(), subject:vals.subject, chapter:null,
+      notes:vals.desc.trim(), syllabusKey:null, attachments:[], createdAt:ts, time:vals.reminder||'19:00', intervals, reviews,
+      priority:maxP+1, stars:0, customTags:[], forgotLog:[], duration:parseInt(vals.duration)||null };
+    db.topics.push(topic); db.settings.xp += 5; saveTopics(); saveSettings(); toast(`"${topic.title}" scheduled with custom intervals`);
+    switchView('today'); renderAll();
+  });
+};
+
+/* ============ EXPLORER ============ */
+function renderExplorerFilters(){
+  buildSubjTabs(document.getElementById('subjTabs'), explorerFilter.subject, s=>{ explorerFilter.subject=s; explorerFilter.selectedChapter=null; renderExplorer(); });
+  const clsWrap=document.getElementById('classTabs'); clsWrap.innerHTML='';
+  ['All','Class 11','Class 12'].forEach(c=>{ const b=document.createElement('div'); b.className='sub-tab'+(explorerFilter.cls===c?' sel':''); if(explorerFilter.cls===c) b.style.background='var(--violet)'; b.textContent=c; b.onclick=()=>{explorerFilter.cls=c; renderExplorer();}; clsWrap.appendChild(b); });
+  const stWrap=document.getElementById('statusTabs'); stWrap.innerHTML='';
+  [['All','All'],['🔴','red'],['🟡','yellow'],['🟢','green'],['⚪','notstarted']].forEach(([lab,val])=>{ const b=document.createElement('div'); b.className='sub-tab'+(explorerFilter.status===val?' sel':''); if(explorerFilter.status===val) b.style.background='var(--surface-3)'; b.style.color=explorerFilter.status===val?'var(--text)':'var(--muted)'; b.textContent=lab; b.onclick=()=>{explorerFilter.status=val; renderExplorer();}; stWrap.appendChild(b); });
+}
+function renderExplorer(){
+  renderExplorerFilters();
+  const listEl=document.getElementById('chapterList'); listEl.innerHTML='';
+  const subj=explorerFilter.subject;
+  let rows=[];
+  ['Class 11','Class 12'].forEach(cls=>{
+    if(explorerFilter.cls!=='All' && explorerFilter.cls!==cls) return;
+    SYLLABUS[subj][cls].forEach(([chapter,topics])=>{
+      const chRet=chapterRetention(subj,chapter);
+      const meta=db.chapterMeta[chapterKey(subj,chapter)]||{};
+      const status = meta.manualStatus ? {Fresh:'green',Hazy:'yellow',Fading:'yellow','High Risk':'red'}[meta.manualStatus] : retentionStatus(chRet);
+      if(explorerFilter.status!=='All' && explorerFilter.status!==status) return;
+      rows.push({cls,chapter,topics,chRet,status});
+    });
+  });
+  const order={red:0,yellow:1,green:2,notstarted:3};
+  rows.sort((a,b)=>order[a.status]-order[b.status]);
+
+  rows.forEach(({cls,chapter,topics,chRet})=>{
+    const sbKey=chapterKey(subj,chapter); const sb=db.scoreBooster[sbKey]; const meta=db.chapterMeta[sbKey]||{};
+    const nextLabel = chapterNextSlotLabel(subj,chapter);
+    const acc=document.createElement('div'); acc.className='acc-chapter'+(explorerFilter.selectedChapter===chapter?' open':'');
+    acc.innerHTML=`<div class="acc-head">
+        <div class="slab" style="background:${chapterSlabColor(subj,chapter)};"></div>
+        <div style="flex:1;">
+          <div class="acc-title">${escapeHtml(chapter)} <span style="color:var(--muted);font-weight:400;font-size:10px;">${cls.replace('Class ','C')}</span></div>
+          <div class="acc-sub">${meta.manualStatus?`<span class="status-chip" style="background:${STATUS_COLORS[meta.manualStatus]}33;color:${STATUS_COLORS[meta.manualStatus]};">${meta.manualStatus}</span> `:''}${meta.method?`🏷️ ${escapeHtml(meta.method)} · `:''}${nextLabel?escapeHtml(nextLabel):''}</div>
+        </div>
+        ${sb?`<div class="acc-pct">${sb.accuracy}%</div>`:''}
+        <div class="acc-arrow">▾</div>
+      </div><div class="acc-body"></div>`;
+    acc.querySelector('.acc-head').onclick=()=>{ explorerFilter.selectedChapter=explorerFilter.selectedChapter===chapter?null:chapter; renderExplorer(); drawCurveAndRoadmap(); };
+    const bodyEl=acc.querySelector('.acc-body');
+
+    const toolRow=document.createElement('div'); toolRow.className='chip-tools';
+    toolRow.innerHTML = `<span class="chip-tool" data-act="status">🎯 ${meta.manualStatus||'auto status'}</span><span class="chip-tool" data-act="notes">📝 notes</span><span class="chip-tool" data-act="tag">🏷️ ${meta.method||'method'}</span><span class="chip-tool" data-act="sb">📊 score booster</span>`;
+    toolRow.querySelector('[data-act=status]').onclick=(e)=>{ e.stopPropagation(); editChapterStatus(subj,chapter); };
+    toolRow.querySelector('[data-act=notes]').onclick=(e)=>{ e.stopPropagation(); editChapterNotes(subj,chapter); };
+    toolRow.querySelector('[data-act=tag]').onclick=(e)=>{ e.stopPropagation(); editChapterMethod(subj,chapter); };
+    toolRow.querySelector('[data-act=sb]').onclick=(e)=>{ e.stopPropagation(); editSB(subj,chapter); };
+    bodyEl.appendChild(toolRow);
+    if(meta.notes){ const nd=document.createElement('div'); nd.className='chapter-note-txt'; nd.textContent=meta.notes; bodyEl.appendChild(nd); }
+
+    const logged=db.topics.filter(t=>t.subject===subj&&t.chapter===chapter).sort((a,b)=>(a.confidence??0)-(b.confidence??0));
+    if(logged.length){
+      const lh=document.createElement('div'); lh.style.cssText='font-size:10px;color:var(--muted);margin:8px 0 4px;text-transform:uppercase;letter-spacing:.5px;'; lh.textContent='Your topics — drag by confidence, tap to open'; bodyEl.appendChild(lh);
+      const dragWrap=document.createElement('div');
+      logged.forEach(t=>{
+        const ret=topicRetentionNow(t);
+        const row=document.createElement('div'); row.className='topic-row'; row.dataset.id=t.id;
+        row.innerHTML=`<span class="trhandle handle">⠿</span><span class="tslab" style="background:${retentionColor(ret)};width:8px;height:8px;border-radius:50%;flex-shrink:0;"></span><div style="flex:1;font-size:12px;">${escapeHtml(t.title)}${t.stars?' <span class="stars-mini">'+'★'.repeat(t.stars)+'</span>':''}<div class="task-meta" style="margin-top:2px;">${repProgress(t)} reviews</div></div>`;
+        row.onclick=(e)=>{ if(e.target.classList.contains('trhandle')) return; openTopicDetail(t.id); };
+        dragWrap.appendChild(row);
+      });
+      bodyEl.appendChild(dragWrap);
+      enableTopicReorder(dragWrap, (ids)=>{ ids.forEach((id,i)=>{ const t=db.topics.find(x=>x.id===id); if(t) t.confidence=i; }); saveTopics(); });
+    }
+    topics.forEach(topic=>{
+      const key=topicKey(subj,chapter,topic); if(findTopicByKey(key)) return;
+      const row=document.createElement('div'); row.className='topic-pick';
+      row.innerHTML=`<span class="tslab" style="background:var(--grey);"></span><span style="color:var(--muted);">${escapeHtml(topic)}</span>`;
+      bodyEl.appendChild(row);
+    });
+    listEl.appendChild(acc);
+  });
+  document.getElementById('filterTopicCount').textContent=db.topics.filter(t=>t.subject===subj).length+' logged';
+  drawCurveAndRoadmap();
+}
+function editChapterStatus(subj,chapter){
+  const key=chapterKey(subj,chapter); const cur=db.chapterMeta[key]||{};
+  openGenericModal('Manual status — '+chapter, [
+    {type:'select', id:'status', label:'Override the auto color', options:['Auto (from retention)'].concat(MANUAL_STATUSES), value:cur.manualStatus||'Auto (from retention)'}
+  ], (vals)=>{ db.chapterMeta[key]=Object.assign(cur,{manualStatus: vals.status.startsWith('Auto')?null:vals.status}); saveChapterMeta(); renderExplorer(); toast('Status saved'); });
+}
+function editChapterNotes(subj,chapter){
+  const key=chapterKey(subj,chapter); const cur=db.chapterMeta[key]||{};
+  openGenericModal('Chapter notes — '+chapter, [
+    {type:'textarea', id:'notes', label:'Notes / instructions for this chapter', value:cur.notes||'', placeholder:'Anything you want to remember about this chapter...'}
+  ], (vals)=>{ db.chapterMeta[key]=Object.assign(cur,{notes:vals.notes.trim()}); saveChapterMeta(); renderExplorer(); toast('Chapter notes saved'); });
+}
+function editChapterMethod(subj,chapter){
+  const key=chapterKey(subj,chapter); const cur=db.chapterMeta[key]||{};
+  openGenericModal('Review method — '+chapter, [
+    {type:'select', id:'method', label:'Which method for this chapter?', options:allMethodTags().concat(['+ Add new method...']), value:cur.method||allMethodTags()[0]}
+  ], (vals)=>{
+    if(vals.method==='+ Add new method...'){
+      openGenericModal('New method name', [{type:'text', id:'newm', label:'Method name', placeholder:'e.g. Diagram Redraw'}], (v2)=>{
+        if(!v2.newm.trim()) return;
+        db.settings.customMethods=(db.settings.customMethods||[]); db.settings.customMethods.push(v2.newm.trim()); saveSettings();
+        db.chapterMeta[key]=Object.assign(cur,{method:v2.newm.trim()}); saveChapterMeta(); renderExplorer(); toast('New method added and set');
+      });
+      return;
+    }
+    db.chapterMeta[key]=Object.assign(cur,{method:vals.method}); saveChapterMeta(); renderExplorer(); toast('Method tag saved');
+  });
+}
+function editSB(subj,chapter){
+  const key=chapterKey(subj,chapter); const cur=db.scoreBooster[key]||{questions:'',accuracy:'',progress:''};
+  openGenericModal('Score Booster stats — '+chapter, [
+    {type:'number', id:'questions', label:'Questions attempted', value:cur.questions},
+    {type:'number', id:'accuracy', label:'Accuracy %', value:cur.accuracy},
+    {type:'number', id:'progress', label:'Progress %', value:cur.progress}
+  ], (vals)=>{ db.scoreBooster[key]={questions:parseInt(vals.questions)||0, accuracy:parseInt(vals.accuracy)||0, progress:parseInt(vals.progress)||0}; saveSB(); renderExplorer(); toast('Score Booster stats saved'); });
+}
+
+/* ============ CURVE (real Ebbinghaus decay, resets per rep) + mini roadmap ============ */
+function drawCurveAndRoadmap(){
+  const canvas=document.getElementById('curveCanvas'); const dpr=window.devicePixelRatio||1;
+  const w=canvas.clientWidth||480,h=120; canvas.width=w*dpr; canvas.height=h*dpr;
+  const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr); ctx.clearRect(0,0,w,h);
+  const label=document.getElementById('curveSelLabel'); const roadmap=document.getElementById('roadmapStrip');
+
+  let topicObj=null, dataTopics=[];
+  if(explorerFilter.selectedTopicId){ topicObj=db.topics.find(t=>t.id===explorerFilter.selectedTopicId); }
+  if(topicObj){ dataTopics=[topicObj]; label.textContent=`${topicObj.subject} › ${topicObj.chapter} › ${topicObj.title}`; }
+  else if(explorerFilter.selectedChapter){ dataTopics=db.topics.filter(t=>t.subject===explorerFilter.subject&&t.chapter===explorerFilter.selectedChapter); label.textContent=`${explorerFilter.subject} › ${explorerFilter.selectedChapter}`+(dataTopics.length?'':' — no reviews logged yet'); }
+  else{ dataTopics=db.topics.filter(t=>t.subject===explorerFilter.subject); label.textContent=`${explorerFilter.subject} — tap a chapter below`; }
+
+  // faint reference decay curves (correctly oriented: start high, decay down)
+  ctx.strokeStyle='#26314D'; ctx.lineWidth=1;
+  for(let k=0;k<3;k++){ ctx.beginPath(); const S=18+k*14;
+    for(let x=0;x<=w;x+=4){ const y=h*.08+(h*.68)*(1-Math.exp(-x/S)); x===0?ctx.moveTo(x,y):ctx.lineTo(x,y); }
+    ctx.stroke(); }
+  ctx.fillStyle='rgba(232,163,61,0.10)'; ctx.fillRect(0,h*.08,w,h*.14);
+
+  roadmap.innerHTML='';
+  if(!dataTopics.length){ ctx.fillStyle='#8B94AC'; ctx.font='11px Inter'; ctx.fillText('No review history yet for this selection.',8,h/2); return; }
+
+  const t=dataTopics.slice().sort((a,b)=>b.reviews.filter(r=>r.done).length-a.reviews.filter(r=>r.done).length)[0];
+  drawEbbinghausCurve(ctx, t, w, h);
+  roadmap.innerHTML = renderScheduleTrail(t, true);
+}
+// true Ebbinghaus sawtooth: exponential decay from 100%, resets to 100% at each successful review, each successive segment decays slower (bigger S)
+function drawEbbinghausCurve(ctx, t, w, h){
+  const done=t.reviews.filter(r=>r.done);
+  const totalSpan=Math.max(daysBetween(t.createdAt, todayStr()), 10);
+  const px=d=>(daysBetween(t.createdAt,d)/totalSpan)*(w-16)+8;
+  const topY=h*.08, botY=h*.76;
+  ctx.strokeStyle='#E8A33D'; ctx.lineWidth=2.2; ctx.beginPath();
+  let cursor=t.createdAt; ctx.moveTo(px(cursor), topY);
+  done.forEach((r,i)=>{
+    const gap=Math.max(1,daysBetween(cursor,r.doneDate));
+    const S=topicStability(t,i+1);
+    for(let d=0;d<=gap;d++){ const dt=addDays(cursor,d); const y=topY+(botY-topY)*(1-Math.exp(-d/S)); ctx.lineTo(px(dt),y); }
+    ctx.lineTo(px(r.doneDate), topY);
+    ctx.fillStyle = r.lastOutcome==='forgot' ? '#E85D5D' : '#E8A33D';
+    ctx.beginPath(); ctx.arc(px(r.doneDate), topY, 3.2, 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(px(r.doneDate), topY);
+    cursor=r.doneDate;
+  });
+  const gapT=Math.max(0,daysBetween(cursor,todayStr()));
+  const S=topicStability(t, done.length);
+  for(let d=0;d<=gapT;d++){ const dt=addDays(cursor,d); const y=topY+(botY-topY)*(1-Math.exp(-d/S)); ctx.lineTo(px(dt),y); }
+  ctx.stroke();
+  const tx=px(todayStr()); ctx.strokeStyle='rgba(255,255,255,.3)'; ctx.setLineDash([3,3]); ctx.beginPath(); ctx.moveTo(tx,0); ctx.lineTo(tx,h); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle='#8B94AC'; ctx.font='9px JetBrains Mono'; ctx.fillText('today',tx-12,h-3);
+}
+function renderScheduleTrail(t, mini){
+  let out='';
+  t.reviews.forEach((r,i)=>{
+    const cls = r.done ? 'done' : (r===nextReview(t) ? 'current' : '');
+    out += `<div class="sched-node-wrap"><div class="sched-line ${r.done?'done':''}"></div><div class="sched-node ${cls}">${r.done?'✓':'D'+t.intervals[i]}</div><div class="sched-lbl">R${i+1}</div></div>`;
+  });
+  return out;
+}
+function renderRevisionTimeline(t){
+  let out='';
+  t.reviews.forEach((r,i)=>{
+    const isLast = i===t.reviews.length-1;
+    const cls = r.done?'done':(r===nextReview(t)?'current':'');
+    const statusTxt = r.done ? `Completed${r.minutes?` · ${r.minutes}m`:''}${r.lastOutcome?' · '+r.lastOutcome:''}` : (r===nextReview(t) ? `Due ${fmtDate(r.dueDate)}` : `Expected ${fmtDate(r.dueDate)}`);
+    out += `<div class="rt-item">
+      <div class="rt-rail"><div class="rt-dot ${cls}"></div>${isLast?'':'<div class="rt-line '+(r.done?'done':'')+'"></div>'}</div>
+      <div class="rt-content"><div class="rt-date">R${i+1} · ${fmtDate(r.dueDate)}</div><div class="rt-status ${cls}">${statusTxt}</div></div>
+    </div>`;
+  });
+  return out;
+}
+
+/* ============ TOPIC DETAIL SHEET ============ */
+function openTopicDetail(id){
+  const t=db.topics.find(x=>x.id===id); if(!t) return;
+  document.getElementById('topicSheetTitle').textContent = t.title;
+  renderTopicDetailBody(id);
+  document.getElementById('topicBackdrop').classList.add('show');
+}
+function renderTopicDetailBody(id){
+  const t=db.topics.find(x=>x.id===id); if(!t) return;
+  const body=document.getElementById('topicSheetBody');
+  const doneCount=t.reviews.filter(r=>r.done).length;
+  const pct=Math.round((doneCount/t.reviews.length)*100);
+  const r=nextReview(t);
+  const slot = r ? REVIEW_SLOTS.find(s=>s.day===t.intervals[r.index-1]) : null;
+
+  let html = `<div style="margin-bottom:8px;"><span class="tag" style="background:${subjColor(t.subject)}22;color:${subjColor(t.subject)};">${escapeHtml(t.subject)}</span>${t.chapter?` <span style="color:var(--muted);font-size:11px;">${escapeHtml(t.chapter)}</span>`:''}</div>`;
+
+  if(r){
+    html += `<div class="focus-card">
+      <div class="fc-label">Today's Focus</div>
+      <div class="fc-title">${slot?slot.label:'Review '+r.index}</div>
+      <div class="fc-sub">${slot?escapeHtml(slot.primary):''} ${r.dueDate<todayStr()?' · overdue since '+fmtDate(r.dueDate) : (r.dueDate===todayStr()?' · due today':' · due '+fmtDate(r.dueDate))}</div>
+      <button class="btn btn-primary" id="td_start" style="margin-top:10px;">Start this review</button>
+    </div>`;
+  } else {
+    html += `<div class="focus-card"><div class="fc-label">Status</div><div class="fc-title">All reviews complete ✓</div><div class="fc-sub">This topic has finished its full spaced-repetition run.</div></div>`;
+  }
+
+  html += `<div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;"><b style="font-size:12.5px;">Learning Progress</b><span class="mono" style="color:var(--amber);">${pct}%</span></div>
+    <div class="progress-bar"><i style="width:${pct}%"></i></div>
+    <div style="font-size:11px;color:var(--muted);margin-top:3px;">${doneCount}/${t.reviews.length} revisions completed</div>`;
+
+  html += `<div class="section-title">Revision Schedule</div><div class="sched-trail">${renderScheduleTrail(t)}</div>`;
+  html += `<div class="section-title">Revision Timeline</div><div>${renderRevisionTimeline(t)}</div>`;
+
+  html += `<div class="section-title">Importance</div><div class="stars-row" id="td_stars">${[1,2,3,4,5].map(n=>`<span data-n="${n}" class="${t.stars>=n?'on':''}">★</span>`).join('')}</div>`;
+
+  html += `<div class="section-title">Custom tags</div><div class="tagchip-row" id="td_tags">${(t.customTags||[]).map((tag,i)=>`<span class="tagchip">${escapeHtml(tag)}<span class="x" data-i="${i}">✕</span></span>`).join('')}</div>
+    <div style="display:flex;gap:6px;margin-top:6px;"><input type="text" id="td_newtag" placeholder="Add a tag..." style="flex:1;"><button class="btn btn-ghost btn-sm" id="td_addtag">Add</button></div>`;
+
+  if(t.forgotLog && t.forgotLog.length){
+    html += `<div class="section-title">Forgetting history</div><div class="card">`;
+    t.forgotLog.slice(-6).reverse().forEach(f=>{ const rl=FORGET_REASONS.find(x=>x.id===f.reason); html += `<div class="reason-tally"><span>${fmtDate(f.date)} · R${f.repIndex}</span><span style="color:var(--rose);">${rl?rl.label:f.reason}</span></div>`; });
+    html += `</div>`;
+  }
+
+  html += `<div class="section-title">Notes</div><div class="card" style="font-size:12.5px;color:var(--muted);white-space:pre-wrap;">${escapeHtml(t.notes)||'—'}</div>`;
+  html += `<button class="link-btn" id="td_editIntervals" style="margin-top:6px;">✏️ Customize this topic's review intervals</button>`;
+
+  body.innerHTML = html;
+
+  if(r){ document.getElementById('td_start').onclick=()=>{ document.getElementById('topicBackdrop').classList.remove('show'); openReviewOutcomeModal(t.id, null); }; }
+  body.querySelectorAll('#td_stars span').forEach(s=>{ s.onclick=()=>{ t.stars=parseInt(s.dataset.n); saveTopics(); renderTopicDetailBody(id); renderAll(); }; });
+  body.querySelectorAll('#td_tags .x').forEach(x=>{ x.onclick=()=>{ t.customTags.splice(parseInt(x.dataset.i),1); saveTopics(); renderTopicDetailBody(id); }; });
+  document.getElementById('td_addtag').onclick=()=>{ const v=document.getElementById('td_newtag').value.trim(); if(!v) return; t.customTags=t.customTags||[]; t.customTags.push(v); saveTopics(); renderTopicDetailBody(id); };
+  document.getElementById('td_editIntervals').onclick=()=>editTopicIntervals(id);
+}
+document.getElementById('topicSheetClose').onclick=()=>{ document.getElementById('topicBackdrop').classList.remove('show'); renderAll(); };
+document.getElementById('topicBackdrop').onclick=(e)=>{ if(e.target.id==='topicBackdrop'){ e.currentTarget.classList.remove('show'); renderAll(); } };
+
+function editTopicIntervals(id){
+  const t=db.topics.find(x=>x.id===id); if(!t) return;
+  const fields = t.reviews.map((r,i)=> r.done ? null : {type:'number', id:'iv'+i, label:`R${i+1} — days after start (currently ${t.intervals[i]})`, value:t.intervals[i]}).filter(Boolean);
+  if(!fields.length){ toast('All reviews for this topic are already done'); return; }
+  openGenericModal('Custom intervals — '+t.title, fields, (vals)=>{
+    const anchor = t.reviews.filter(r=>r.done).length ? t.reviews.filter(r=>r.done).slice(-1)[0].doneDate : t.createdAt;
+    t.reviews.forEach((r,i)=>{ if(r.done) return; const key='iv'+i; if(vals[key]!==undefined){ const nv=parseInt(vals[key]); if(nv>0){ t.intervals[i]=nv; r.dueDate=addDays(t.createdAt, nv); } } });
+    saveTopics(); toast('Custom intervals saved for this topic'); renderTopicDetailBody(id); renderAll();
+  });
+}
+
+/* ============ CALENDAR ============ */
+function renderCalendar(){
+  document.getElementById('calLabel').textContent=calMonth.toLocaleDateString(undefined,{month:'long',year:'numeric'});
+  const grid=document.getElementById('calGrid'); grid.innerHTML='';
+  ['S','M','T','W','T','F','S'].forEach(d=>{ const el=document.createElement('div'); el.className='cal-dow'; el.textContent=d; grid.appendChild(el); });
+  const year=calMonth.getFullYear(), month=calMonth.getMonth();
+  const firstDow=new Date(year,month,1).getDay(); const daysInMonth=new Date(year,month+1,0).getDate();
+  const ts=todayStr();
+  const dueByDay={};
+  db.topics.forEach(t=>t.reviews.forEach(r=>{ if(!r.done){ (dueByDay[r.dueDate]=dueByDay[r.dueDate]||[]).push(t.subject); } }));
+  for(let i=0;i<firstDow;i++){ const b=document.createElement('div'); b.className='cal-day blank'; grid.appendChild(b); }
+  for(let d=1; d<=daysInMonth; d++){
+    const dateStr=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const el=document.createElement('div'); el.className='cal-day'+(dateStr===ts?' today':'')+(dateStr===selectedCalDay?' sel':'');
+    const subs=dueByDay[dateStr]?[...new Set(dueByDay[dateStr])].slice(0,4):[];
+    el.innerHTML=`<span>${d}</span>`+(subs.length?`<div class="cal-dots">${subs.map(s=>`<i style="background:${subjColor(s)};"></i>`).join('')}</div>`:'');
+    el.onclick=()=>{ selectedCalDay=dateStr; renderCalendar(); renderCalDayDetail(); };
+    grid.appendChild(el);
+  }
+}
+function renderCalDayDetail(){
+  const wrap=document.getElementById('calDayDetail'); if(!selectedCalDay){ wrap.innerHTML=''; return; }
+  const items=[]; db.topics.forEach(t=>t.reviews.forEach(r=>{ if(r.dueDate===selectedCalDay) items.push({t,r}); }));
+  if(!items.length){ wrap.innerHTML=`<div class="empty">Nothing scheduled on ${fmtDate(selectedCalDay)}</div>`; return; }
+  wrap.innerHTML=`<div class="section-title">${fmtDate(selectedCalDay)}</div>`+items.map(({t,r})=>`
+    <div class="card"><span class="tag" style="background:${subjColor(t.subject)}22;color:${subjColor(t.subject)};">${escapeHtml(t.subject)}</span>
+    <div class="task-title" style="margin-top:5px;">${escapeHtml(t.title)}</div>
+    <div class="task-meta">Review ${r.index}/${t.reviews.length} ${r.done?'· done':''}</div></div>`).join('');
+}
+document.getElementById('calPrev').onclick=()=>{ calMonth.setMonth(calMonth.getMonth()-1); renderCalendar(); };
+document.getElementById('calNext').onclick=()=>{ calMonth.setMonth(calMonth.getMonth()+1); renderCalendar(); };
+
+/* ============ ALL TOPICS ============ */
+function renderAllTopics(){
+  const wrap=document.getElementById('allTopics'); const q=document.getElementById('topicSearch').value.toLowerCase();
+  const list=db.topics.filter(t=>t.title.toLowerCase().includes(q)||t.subject.toLowerCase().includes(q)).sort((a,b)=>b.createdAt.localeCompare(a.createdAt));
+  document.getElementById('topicCount').textContent=db.topics.length;
+  if(!list.length){ wrap.innerHTML=`<div class="empty"><b>No topics yet</b>Log your first study session from the + tab.</div>`; return; }
+  wrap.innerHTML='';
+  list.forEach(t=>{
+    const segs=t.reviews.map(r=>`<span class="${r.done?'tseg done':(r===nextReview(t)?'tseg next':'tseg')}"></span>`).join('');
+    const el=document.createElement('div'); el.className='card'; el.style.cursor='pointer';
+    el.innerHTML=`<span class="tag" style="background:${subjColor(t.subject)}22;color:${subjColor(t.subject)};">${escapeHtml(t.subject)}</span>${t.stars?' <span class="stars-mini">'+'★'.repeat(t.stars)+'</span>':''}
+      <div class="task-title" style="margin-top:5px;">${escapeHtml(t.title)}</div>
+      <div class="task-meta">Started ${fmtDate(t.createdAt)} · ${repProgress(t)}${t.chapter?' · '+escapeHtml(t.chapter):''}</div>
+      <div class="timeline">${segs}</div>`;
+    el.onclick=()=>openTopicDetail(t.id);
+    wrap.appendChild(el);
+  });
+}
+document.getElementById('topicSearch').oninput=renderAllTopics;
+
+/* ============ FOREST (game-map style) ============ */
+function hashStr(s){ let h=0; for(let i=0;i<s.length;i++){ h=(h<<5)-h+s.charCodeAt(i); h|=0; } return Math.abs(h); }
+function treeSVGGroup(cx, cy, growth, color, seed, label, scale){
+  let s=seed;
+  const rnd=(n)=>{ s=(s*9301+49297)%233280; return (s/233280)*n; };
+  const leafCount=Math.round(4+growth*20);
+  let leaves='';
+  for(let i=0;i<leafCount;i++){
+    const ang=rnd(360)*Math.PI/180; const rad=(6+rnd(14)*growth)*scale;
+    const lx=cx+Math.cos(ang)*rad; const ly=cy-8*scale-Math.sin(ang)*rad*0.7;
+    const size=(2.4+rnd(2.4)*growth)*scale; const op=0.4+growth*0.6;
+    leaves += `<circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="${size.toFixed(1)}" fill="${color}" opacity="${op.toFixed(2)}"/>`;
+  }
+  const trunkH=(12+growth*7)*scale;
+  return `<g>
+    <ellipse cx="${cx}" cy="${cy+3*scale}" rx="${11*scale}" ry="${2.6*scale}" fill="#0e1424" opacity="0.6"/>
+    <rect x="${cx-2*scale}" y="${cy-trunkH}" width="${4*scale}" height="${trunkH}" rx="1.4" fill="#5b4530"/>
+    ${leaves}
+    <text x="${cx}" y="${cy+13*scale}" text-anchor="middle" class="tree-node-label">${escapeHtml(label)}</text>
+    <text x="${cx}" y="${cy+22*scale}" text-anchor="middle" class="tree-node-pct">${Math.round(growth*100)}%</text>
+  </g>`;
+}
+function renderForestSubjTabs(){ buildSubjTabs(document.getElementById('forestSubjTabs'), forestSubj, s=>{ forestSubj=s; renderForest(); }); }
+function renderForest(){
+  renderForestSubjTabs();
+  const wrap=document.getElementById('forestSvgWrap');
+  const chapters={};
+  db.topics.filter(t=>t.subject===forestSubj && t.chapter).forEach(t=>{ const key=chapterKey(t.subject,t.chapter); (chapters[key]=chapters[key]||{subject:t.subject,chapter:t.chapter,topics:[]}).topics.push(t); });
+  const keys=Object.keys(chapters);
+  document.getElementById('forestCount').textContent = db.topics.filter(t=>t.chapter).reduce((s,t)=>{const k=chapterKey(t.subject,t.chapter); return s;},0);
+  const allKeys = new Set(db.topics.filter(t=>t.chapter).map(t=>chapterKey(t.subject,t.chapter)));
+  document.getElementById('forestCount').textContent = allKeys.size+' tree'+(allKeys.size===1?'':'s');
+
+  // include ALL chapters of this subject as path nodes (grown or not) for the game-map feel
+  let allChaptersOrdered=[];
+  ['Class 11','Class 12'].forEach(cls=> SYLLABUS[forestSubj][cls].forEach(([chapter])=> allChaptersOrdered.push(chapter)));
+
+  const n=allChaptersOrdered.length;
+  const stepX = 92;
+  const svgW = Math.max(360, n*stepX+40);
+  const svgH = 190;
+  let path=''; let nodes='';
+  let prevX=null, prevY=null;
+  allChaptersOrdered.forEach((chapter,i)=>{
+    const cx = 40+i*stepX;
+    const cy = 95 + Math.sin(i*0.9)*46;
+    if(prevX!==null){ path += `<path d="M ${prevX} ${prevY} Q ${(prevX+cx)/2} ${(prevY+cy)/2-20} ${cx} ${cy}" stroke="#2A3452" stroke-width="3" stroke-dasharray="2 7" fill="none"/>`; }
+    const c=chapters[chapterKey(forestSubj,chapter)];
+    if(c){
+      const doneCount=c.topics.reduce((s,t)=>s+t.reviews.filter(r=>r.done).length,0);
+      const possible=c.topics.length*6;
+      const growth=Math.min(1, doneCount/Math.max(1,possible));
+      nodes += treeSVGGroup(cx,cy,growth, subjColor(forestSubj), hashStr(chapterKey(forestSubj,chapter)), chapter.replace(/^\d+\.\s*/,'').slice(0,14), 1.9);
+    } else {
+      nodes += `<circle cx="${cx}" cy="${cy}" r="9" fill="#1D2740" stroke="#2A3452" stroke-width="1.5"/><text x="${cx}" y="${cy+20}" text-anchor="middle" class="tree-node-label" opacity="0.5">${escapeHtml(chapter.replace(/^\d+\.\s*/,'').slice(0,12))}</text>`;
+    }
+    prevX=cx; prevY=cy;
+  });
+  wrap.innerHTML = `<svg viewBox="0 0 ${svgW} ${svgH}" width="${svgW}" height="${svgH}" style="min-width:${svgW}px;">${path}${nodes}</svg>`;
+  if(!keys.length){ wrap.innerHTML += `<div class="empty" style="margin-top:8px;"><b>No trees grown here yet</b>Log a ${forestSubj} topic and complete reviews — its tree appears along the trail.</div>`; }
+}
+
+/* ============ FORGETTING DIAGNOSTIC ============ */
+function renderForgetDiag(){
+  const wrap=document.getElementById('forgetDiagCard');
+  const tally={rushed:0,conceptual:0,volume:0};
+  const byChapter={};
+  db.topics.forEach(t=>{ (t.forgotLog||[]).forEach(f=>{ if(tally[f.reason]!==undefined) tally[f.reason]++; const ck=t.chapter?chapterKey(t.subject,t.chapter):t.title; byChapter[ck]=(byChapter[ck]||0)+1; }); });
+  const total=tally.rushed+tally.conceptual+tally.volume;
+  if(!total){ wrap.innerHTML=`<div style="font-size:12px;color:var(--muted);">No "forgot" markings yet — this fills in as you review honestly.</div>`; return; }
+  let html='';
+  FORGET_REASONS.forEach(fr=>{ html+=`<div class="reason-tally"><span>${fr.label}</span><span class="mono" style="color:var(--amber);">${tally[fr.id]}</span></div>`; });
+  const topChapters = Object.entries(byChapter).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  if(topChapters.length){ html += `<div style="font-size:10.5px;color:var(--muted);margin-top:8px;">Most forgotten: ${topChapters.map(([k,v])=>k.split('|||').pop()+' ('+v+')').join(', ')}</div>`; }
+  wrap.innerHTML=html;
+}
+
+/* ============ STATS ============ */
+function renderStats(){
+  const xp=db.settings.xp; const r=currentRank(xp);
+  const nextR=RANKS[RANKS.indexOf(r)+1];
+  document.getElementById('statXP').textContent=xp;
+  document.getElementById('statRank').textContent=r.ic;
+  document.getElementById('statRankSub').textContent=r.name;
+  document.getElementById('statReviews').textContent=db.settings.totalReviews;
+  document.getElementById('statTopics').textContent=db.topics.length;
+  const span=nextR?(nextR.min-r.min):1; const prog=nextR?Math.min(100,((xp-r.min)/span)*100):100;
+  document.getElementById('levelFill').style.width=prog+'%';
+  document.getElementById('intervalInput').value=db.settings.intervals.join(', ');
+  renderBadges(); renderRank(); renderSlotInstructions(); renderForgetDiag(); renderCountdownManager(); renderDriveCard();
+}
+function renderSlotInstructions(){
+  const wrap=document.getElementById('slotInstructions'); wrap.innerHTML='';
+  REVIEW_SLOTS.forEach(s=>{
+    const row=document.createElement('div'); row.style.cssText='margin-bottom:12px;';
+    row.innerHTML=`<div style="font-size:12.5px;font-weight:600;margin-bottom:4px;">${s.label}</div>
+      <div style="font-size:12px;color:var(--text);background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:8px;">${escapeHtml(s.primary)}</div>
+      <button class="link-btn" style="margin-top:4px;font-size:10.5px;">▾ reference method</button>
+      <div style="display:none;font-size:11px;color:var(--muted);margin-top:5px;padding:7px 8px;background:var(--surface-3);border-radius:8px;">${escapeHtml(s.secondary)}</div>`;
+    const btn=row.querySelector('.link-btn'); const ref=row.querySelector('div[style*="display:none"]');
+    btn.onclick=()=>{ const open=ref.style.display!=='none'; ref.style.display=open?'none':'block'; btn.textContent=open?'▾ reference method':'▴ hide reference'; };
+    wrap.appendChild(row);
+  });
+}
+document.getElementById('saveIntervals').onclick=async()=>{
+  const raw=document.getElementById('intervalInput').value;
+  const nums=raw.split(',').map(s=>parseInt(s.trim())).filter(n=>!isNaN(n)&&n>0).sort((a,b)=>a-b);
+  if(!nums.length){ toast('Enter at least one valid day number'); return; }
+  db.settings.intervals=nums; await saveSettings(); toast('Interval schedule updated for new topics');
+};
+document.getElementById('notifPermBtn').onclick=()=>{
+  if(!('Notification' in window)){ toast('Notifications not supported here'); return; }
+  Notification.requestPermission().then(p=>toast(p==='granted'?'Notifications enabled':'Permission not granted'));
+};
+document.getElementById('exportBtn').onclick=()=>{
+  const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='recallmaturity-backup.json'; a.click();
+  toast('Backup downloaded');
+};
+document.getElementById('importBtn').onclick=()=>document.getElementById('importFile').click();
+document.getElementById('importFile').onchange=(e)=>{
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=async(ev)=>{
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(data.topics) db.topics=data.topics;
+      if(data.settings) db.settings=Object.assign(db.settings,data.settings);
+      if(data.scoreBooster) db.scoreBooster=data.scoreBooster;
+      if(data.chapterMeta) db.chapterMeta=data.chapterMeta;
+      if(data.badgesSeen) db.badgesSeen=data.badgesSeen;
+      await saveTopics(); await saveSettings(); await saveSB(); await saveChapterMeta(); await saveBadgesSeen();
+      toast('Data imported'); renderAll();
+    }catch(err){ toast('Import failed — invalid file'); }
+  };
+  reader.readAsText(file);
+};
+
+/* ============ ONE-TAP SHARE BACKUP (no setup needed) ============ */
+document.getElementById('shareBackupBtn').onclick=async()=>{
+  const content=JSON.stringify(db,null,2);
+  try{
+    const file=new File([content],'recallmaturity-backup.json',{type:'application/json'});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({ files:[file], title:'RecallMaturity backup', text:'My RecallMaturity study data backup' });
+      toast('Shared ✓'); return;
+    }
+  }catch(e){ if(e && e.name==='AbortError') return; }
+  const blob=new Blob([content],{type:'application/json'});
+  const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='recallmaturity-backup.json'; a.click();
+  toast('Downloaded — attach it to an email or upload it to Drive yourself');
+};
+
+/* ============ GOOGLE DRIVE BACKUP (optional, needs the user's own free OAuth Client ID) ============ */
+function renderDriveCard(){
+  const wrap=document.getElementById('driveCard'); if(!wrap) return;
+  const cid=db.settings.googleClientId;
+  if(!cid){
+    wrap.innerHTML=`
+      <div style="font-size:12px;margin-bottom:8px;">Connect your own Google account so backups save straight to your Drive automatically. This needs a short one-time setup on Google's side — I can't create that part for you (it has to be your own account), but it only takes a couple of minutes and is free.</div>
+      <button class="link-btn" id="driveHowBtn">▾ How do I get a Client ID?</button>
+      <div id="driveHow" style="display:none;font-size:11px;color:var(--muted);margin:8px 0;padding:9px;background:var(--surface-3);border-radius:8px;line-height:1.6;">
+        1. Go to <b>console.cloud.google.com</b> → create a project (free)<br>
+        2. "APIs &amp; Services" → Library → enable the <b>Google Drive API</b><br>
+        3. "OAuth consent screen" → External → fill the basic info → add your own email as a test user<br>
+        4. "Credentials" → Create Credentials → <b>OAuth client ID</b> → type "Web application"<br>
+        5. Under "Authorized JavaScript origins" add this app's published web address (once you've published it)<br>
+        6. Copy the Client ID it gives you and paste it below
+      </div>
+      <label style="margin-top:4px;">Google OAuth Client ID</label>
+      <input type="text" id="driveClientIdInput" placeholder="xxxxxxxxxxxx.apps.googleusercontent.com">
+      <button class="btn btn-ghost" id="saveDriveClientId" style="margin-top:8px;">Save Client ID</button>`;
+    document.getElementById('driveHowBtn').onclick=()=>{ const d=document.getElementById('driveHow'); d.style.display=d.style.display==='none'?'block':'none'; };
+    document.getElementById('saveDriveClientId').onclick=async()=>{
+      const v=document.getElementById('driveClientIdInput').value.trim();
+      if(!v){ toast('Paste your Client ID first'); return; }
+      db.settings.googleClientId=v; await saveSettings(); toast('Client ID saved'); renderDriveCard();
+    };
+    return;
+  }
+  wrap.innerHTML=`
+    <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Client ID saved. <button class="link-btn" id="driveChangeId" style="font-size:10.5px;">change</button></div>
+    <button class="btn btn-ghost" id="driveConnectBtn">${googleAccessToken? '✓ Connected to Google — reconnect':'🔗 Connect Google Drive'}</button>
+    <div class="btn-row" style="margin-top:8px;">
+      <button class="btn btn-primary btn-sm" id="driveBackupBtn" ${googleAccessToken?'':'disabled'}>Backup now</button>
+      <button class="btn btn-ghost btn-sm" id="driveRestoreBtn" ${googleAccessToken?'':'disabled'}>Restore</button>
+    </div>
+    <div style="font-size:10.5px;color:var(--muted);margin-top:7px;">${db.settings.driveLastBackup? 'Last Drive backup: '+fmtDateFull(db.settings.driveLastBackup) : 'No Drive backup yet'}${googleAccessToken? ' · auto-backs up once/day while you have the app open and connected':''}</div>`;
+  document.getElementById('driveChangeId').onclick=()=>{ db.settings.googleClientId=''; saveSettings(); renderDriveCard(); };
+  document.getElementById('driveConnectBtn').onclick=connectGoogleDrive;
+  document.getElementById('driveBackupBtn').onclick=backupToDrive;
+  document.getElementById('driveRestoreBtn').onclick=restoreFromDrive;
+}
+function loadGis(cb){
+  if(window.google && window.google.accounts && window.google.accounts.oauth2){ cb(); return; }
+  const s=document.createElement('script'); s.src='https://accounts.google.com/gsi/client';
+  s.onload=cb; s.onerror=()=>toast('Could not reach Google — check your connection');
+  document.head.appendChild(s);
+}
+function connectGoogleDrive(){
+  loadGis(()=>{
+    try{
+      googleTokenClient=google.accounts.oauth2.initTokenClient({
+        client_id: db.settings.googleClientId,
+        scope: 'https://www.googleapis.com/auth/drive.file',
+        callback: (resp)=>{
+          if(resp.error){ toast('Google sign-in failed: '+resp.error); return; }
+          googleAccessToken=resp.access_token;
+          toast('Connected to Google Drive ✓'); renderDriveCard(); tryAutoBackup();
+        }
+      });
+      googleTokenClient.requestAccessToken();
+    }catch(e){ toast('Could not start Google sign-in — double check your Client ID'); }
+  });
+}
+async function backupToDrive(){
+  if(!googleAccessToken){ toast('Connect first'); return; }
+  const content=JSON.stringify(db,null,2);
+  const boundary='rmbound'+Date.now();
+  const metadata={ name:'recallmaturity-backup.json', mimeType:'application/json' };
+  const fileId=db.settings.driveFileId;
+  const body=`--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(metadata)}\r\n--${boundary}\r\nContent-Type: application/json\r\n\r\n${content}\r\n--${boundary}--`;
+  try{
+    const url=fileId? `https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=multipart` : `https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart`;
+    const res=await fetch(url,{ method:fileId?'PATCH':'POST', headers:{ 'Authorization':'Bearer '+googleAccessToken, 'Content-Type':`multipart/related; boundary=${boundary}` }, body });
+    const data=await res.json();
+    if(data.id){ db.settings.driveFileId=data.id; db.settings.driveLastBackup=todayStr(); await saveSettings(); toast('Backed up to Google Drive ✓'); renderDriveCard(); }
+    else{ toast('Drive backup failed — try reconnecting'); }
+  }catch(e){ toast('Drive backup failed — check your connection'); }
+}
+async function restoreFromDrive(){
+  if(!googleAccessToken || !db.settings.driveFileId){ toast('No Drive backup found yet — run Backup now first'); return; }
+  try{
+    const res=await fetch(`https://www.googleapis.com/drive/v3/files/${db.settings.driveFileId}?alt=media`, { headers:{ 'Authorization':'Bearer '+googleAccessToken } });
+    const data=await res.json();
+    if(data.topics) db.topics=data.topics;
+    if(data.settings) db.settings=Object.assign(db.settings,data.settings);
+    if(data.scoreBooster) db.scoreBooster=data.scoreBooster;
+    if(data.chapterMeta) db.chapterMeta=data.chapterMeta;
+    if(data.badgesSeen) db.badgesSeen=data.badgesSeen;
+    await saveTopics(); await saveSettings(); await saveSB(); await saveChapterMeta(); await saveBadgesSeen();
+    toast('Restored from Google Drive ✓'); renderAll();
+  }catch(e){ toast('Restore failed — check your connection'); }
+}
+
+/* ============ NAV ============ */
+function switchView(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active', b.dataset.view===name));
+  if(name==='explore'){ renderExplorer(); renderCalendar(); }
+  if(name==='forest') renderForest();
+  if(name==='stats') renderStats();
+}
+document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>switchView(b.dataset.view));
+
+/* ============ reminders ============ */
+function checkReminders(){
+  const now=new Date(); const hhmm=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0'); const ts=todayStr();
+  db.topics.forEach(t=>{
+    const r=nextReview(t); if(!r) return;
+    if(r.dueDate<=ts && t.time===hhmm){
+      const key=t.id+'_'+ts+'_'+hhmm; if(db.notifiedToday[key]) return; db.notifiedToday[key]=true;
+      toast(`⏰ Ready when you are: ${t.title}`,5000);
+      if('Notification' in window && Notification.permission==='granted'){ new Notification('RecallMaturity',{body:t.title}); }
+    }
+  });
+}
+setInterval(checkReminders, 20000);
+
+/* ============ render all ============ */
+function renderAll(){
+  renderSpotlight(); renderCountdowns();
+  renderToday(); renderAllTopics();
+  if(document.getElementById('view-explore').classList.contains('active')){ renderExplorer(); renderCalendar(); }
+  if(document.getElementById('view-forest').classList.contains('active')) renderForest();
+  if(document.getElementById('view-stats').classList.contains('active')) renderStats();
+  renderRank();
+}
+
+/* ============ AUTO DRIVE BACKUP (best effort, only fires while connected+open) ============ */
+async function tryAutoBackup(){
+  if(!googleAccessToken) return;
+  const ts=todayStr();
+  if(db.settings.driveLastBackup===ts) return;
+  await backupToDrive();
+}
+
+/* ============ Service worker (only matters when self-hosted outside Claude) ============ */
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{ /* fine if missing — e.g. inside Claude's artifact preview */ });
+}
+
+(async function init(){
+  await loadDB();
+  showQuote();
+  initSpeech();
+  renderAll();
+  setTimeout(tryAutoBackup, 4000);
+  setInterval(tryAutoBackup, 30*60*1000);
+})();
+</script>
+</body>
+</html>

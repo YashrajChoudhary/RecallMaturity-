@@ -1,0 +1,25 @@
+{
+  "name": "RecallMaturity",
+  "short_name": "RecallMaturity",
+  "description": "Spaced-repetition study tracker for NEET revision",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0B0F1A",
+  "theme_color": "#0B0F1A",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='38' fill='%230B0F1A'/%3E%3Ctext x='96' y='128' font-size='104' text-anchor='middle' fill='%23E8A33D' font-family='sans-serif'%3ER%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%230B0F1A'/%3E%3Ctext x='256' y='340' font-size='280' text-anchor='middle' fill='%23E8A33D' font-family='sans-serif'%3ER%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
