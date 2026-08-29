@@ -13,6 +13,10 @@
   "dir": "ltr",
   "orientation": "portrait-primary",
   "categories": ["education", "productivity"],
+  "developer": {
+    "name": "Yashraj Choudhary",
+    "url": "https://github.com/YashrajChoudhary"
+  },
   "icons": [
     {
       "src": "https://yashrajchoudhary.github.io/RecallMaturity-/icon-512.png",
