@@ -1769,7 +1769,7 @@ document.getElementById('shareBackupBtn').onclick=async()=>{
 /* ============ GOOGLE DRIVE BACKUP (optional, needs the user's own free OAuth Client ID) ============ */
 function renderDriveCard(){
   const wrap=document.getElementById('driveCard'); if(!wrap) return;
-  const cid=db.settings.googleClientId;
+  const cid='839076821085-gultapl8gngp1hnsagqhjbtsk6m0k68k.apps.googleusercontent.com';
   if(!cid){
     wrap.innerHTML=`
       <div style="font-size:12px;margin-bottom:8px;">Connect your own Google account so backups save straight to your Drive automatically. This needs a short one-time setup on Google's side — I can't create that part for you (it has to be your own account), but it only takes a couple of minutes and is free.</div>
@@ -1816,7 +1816,7 @@ function connectGoogleDrive(){
   loadGis(()=>{
     try{
       googleTokenClient=google.accounts.oauth2.initTokenClient({
-        client_id: db.settings.googleClientId,
+        client_id: '839076821085-gultapl8gngp1hnsagqhjbtsk6m0k68k.apps.googleusercontent.com',
         scope: 'https://www.googleapis.com/auth/drive.file',
         callback: (resp)=>{
           if(resp.error){ toast('Google sign-in failed: '+resp.error); return; }
