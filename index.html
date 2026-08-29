@@ -289,6 +289,129 @@ nav{position:fixed;bottom:0;left:0;right:0;background:rgba(11,15,26,.92);backdro
 </style>
 </head>
 <body>
+  <!-- TWO-STAGE APP OPENER OVERLAY -->
+<div id="introOverlay" style="
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+">
+  <!-- STAGE 1: Centered Glowing App Icon & Full Name -->
+  <div id="stage1Splash" style="
+    position: absolute;
+    inset: 0;
+    background: #0d1117;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+  ">
+    <div style="
+      width: 82px;
+      height: 82px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #1f6feb 0%, #39d353 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(31, 111, 235, 0.45);
+      font-size: 40px;
+    ">
+      🧠
+    </div>
+    <div style="text-align: center; padding: 0 20px;">
+      <h1 style="
+        margin: 0;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: -0.4px;
+        color: #f0f6fc;
+      ">
+        Recall<span style="color: #58a6ff;">Maturity</span>
+      </h1>
+      <p style="
+        margin: 6px 0 0;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #ff9933;
+      ">
+        Active Recall System for NEET
+      </p>
+    </div>
+  </div>
+
+  <!-- STAGE 2: Minimal Soothing Quote Screen -->
+  <div id="stage2Quote" style="
+    position: absolute;
+    inset: 0;
+    background: #f8fafc;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 60px 24px 50px;
+    box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  ">
+    <!-- Top Micro Header -->
+    <div style="
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #64748b;
+    ">
+      Mindset & Active Recall
+    </div>
+
+    <!-- Center Dynamic Quote -->
+    <div style="max-width: 440px; text-align: center; padding: 0 12px;">
+      <p id="dynamicOpenerQuote" style="
+        margin: 0;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.55;
+        letter-spacing: -0.2px;
+      ">
+        <!-- Injected dynamically by JavaScript -->
+      </p>
+      <div style="
+        margin-top: 14px;
+        font-size: 12.5px;
+        font-weight: 500;
+        color: #94a3b8;
+        letter-spacing: 0.2px;
+      ">
+        Spaced Repetition Principle
+      </div>
+    </div>
+
+    <!-- Bottom Enter Action -->
+    <button onclick="dismissIntroOverlay()" style="
+      background: #0d1117;
+      color: #f8fafc;
+      border: none;
+      padding: 14px 38px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(13, 17, 23, 0.25);
+    ">
+      Yeah Buddy! Lightweight! 🗿🧠 →
+    </button>
+  </div>
+</div>
+  
 <div class="orb orb1"></div><div class="orb orb2"></div>
 <div id="toast-wrap"></div>
 <canvas id="confetti"></canvas>
@@ -1944,6 +2067,69 @@ async function tryAutoBackup(){
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js').catch(()=>{ /* fine if missing — e.g. inside Claude's artifact preview */ });
 }
+  /* ================= DYNAMIC OPENER & QUOTE ENGINE ================= */
+const starterQuotes = [
+  {
+    quote: "Forgetting is not a failure—it is the biological trigger that makes memory permanent upon review.",
+    color: "#ff7a00" // Vibrant Orange
+  },
+  {
+    quote: "A chapter left unrevised is a seed left unwatered. Revise today to strengthen the root.",
+    color: "#10b981" // Emerald Green
+  },
+  {
+    quote: "Passive reading tricks the mind into comfort. Active retrieval proves actual retention.",
+    color: "#0284c7" // Ocean Blue
+  },
+  {
+    quote: "The forgetting curve is ruthless to passive eyes, but powerless against spaced intervals.",
+    color: "#0d1117" // Core Slate Dark
+  },
+  {
+    quote: "The forest of your NEET rank is grown one reviewed card at a time.",
+    color: "#8b5cf6" // Deep Violet
+  }
+];
+
+function runIntroSequence() {
+  const stage1 = document.getElementById('stage1Splash');
+  const stage2 = document.getElementById('stage2Quote');
+  const quoteEl = document.getElementById('dynamicOpenerQuote');
+
+  // Select a random quote & color
+  const item = starterQuotes[Math.floor(Math.random() * starterQuotes.length)];
+  if (quoteEl) {
+    quoteEl.textContent = `“${item.quote}”`;
+    quoteEl.style.color = item.color;
+  }
+
+  // Show Stage 1 for 1.3 seconds, then transition to Stage 2
+  setTimeout(() => {
+    if (stage1 && stage2) {
+      stage1.style.opacity = '0';
+      setTimeout(() => {
+        stage1.style.display = 'none';
+        stage2.style.display = 'flex';
+        requestAnimationFrame(() => {
+          stage2.style.opacity = '1';
+        });
+      }, 500);
+    }
+  }, 1300);
+}
+
+function dismissIntroOverlay() {
+  const overlay = document.getElementById('introOverlay');
+  if (overlay) {
+    overlay.style.transition = 'opacity 0.4s ease';
+    overlay.style.opacity = '0';
+    setTimeout(() => overlay.remove(), 400);
+  }
+}
+
+// Automatically start opener on launch
+window.addEventListener('DOMContentLoaded', runIntroSequence);
+  
 /* ================= SYSTEM PERMISSIONS MANAGER ================= */
 async function requestAllAppPermissions() {
   // 1. Request Notification Permission (Alerts, Reminders & Pop-ups)
