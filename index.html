@@ -2169,6 +2169,55 @@ function runIntroSequence() {
     }
   }, 1300);
 }
+/* ================= DYNAMIC OPENER & QUOTE ENGINE ================= */
+const starterQuotes = [
+  {
+    quote: "Forgetting is not a failure—it is the biological trigger that makes memory permanent upon review.",
+    color: "#ff7a00" // Vibrant Orange
+  },
+  {
+    quote: "A chapter left unrevised is a seed left unwatered. Revise today to strengthen the root.",
+    color: "#10b981" // Emerald Green
+  },
+  {
+    quote: "Passive reading tricks the mind into comfort. Active retrieval proves actual retention.",
+    color: "#0284c7" // Ocean Blue
+  },
+  {
+    quote: "The forgetting curve is ruthless to passive eyes, but powerless against spaced intervals.",
+    color: "#0d1117" // Core Dark Slate
+  },
+  {
+    quote: "The forest of your NEET rank is grown one reviewed card at a time.",
+    color: "#8b5cf6" // Deep Violet
+  }
+];
+
+function runIntroSequence() {
+  const stage1 = document.getElementById('stage1Splash');
+  const stage2 = document.getElementById('stage2Quote');
+  const quoteEl = document.getElementById('dynamicOpenerQuote');
+
+  const item = starterQuotes[Math.floor(Math.random() * starterQuotes.length)];
+  if (quoteEl) {
+    quoteEl.textContent = `“${item.quote}”`;
+    quoteEl.style.color = item.color;
+  }
+
+  // 1.3s splash hold -> smooth fade into soothing quote screen
+  setTimeout(() => {
+    if (stage1 && stage2) {
+      stage1.style.opacity = '0';
+      setTimeout(() => {
+        stage1.style.display = 'none';
+        stage2.style.display = 'flex';
+        requestAnimationFrame(() => {
+          stage2.style.opacity = '1';
+        });
+      }, 500);
+    }
+  }, 1300);
+}
 
 function dismissIntroOverlay() {
   const overlay = document.getElementById('introOverlay');
@@ -2179,7 +2228,7 @@ function dismissIntroOverlay() {
   }
 }
 
-// Automatically start opener on launch
+// Automatically initiate intro sequence
 window.addEventListener('DOMContentLoaded', runIntroSequence);
   
 /* ================= SYSTEM PERMISSIONS MANAGER ================= */
