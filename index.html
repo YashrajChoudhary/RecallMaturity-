@@ -2061,7 +2061,19 @@ async function tryAutoBackup(){
   if(db.settings.driveLastBackup===ts) return;
   await backupToDrive();
 }
-
+  
+/* ================= INITIALIZATION ================= */
+(async function init(){
+  try { runIntroSequence(); } catch(e) {}
+  await loadDB();
+  showQuote();
+  initSpeech();
+  renderAll();
+  setTimeout(requestAllAppPermissions, 1000);
+  setTimeout(tryAutoBackup, 4000);
+  setInterval(tryAutoBackup, 30*60*1000);
+})();
+      
 /* ============ Service worker (only matters when self-hosted outside Claude) ============ */
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js').catch(()=>{ /* fine if missing — e.g. inside Claude's artifact preview */ });
@@ -2071,23 +2083,23 @@ if('serviceWorker' in navigator){
 const starterQuotes = [
   {
     quote: "Forgetting is not a failure—it is the biological trigger that makes memory permanent upon review.",
-    color: "#ff7a00" // Vibrant Orange
+    color: "#ff7a00"
   },
   {
     quote: "A chapter left unrevised is a seed left unwatered. Revise today to strengthen the root.",
-    color: "#10b981" // Emerald Green
+    color: "#10b981"
   },
   {
     quote: "Passive reading tricks the mind into comfort. Active retrieval proves actual retention.",
-    color: "#0284c7" // Ocean Blue
+    color: "#0284c7"
   },
   {
     quote: "The forgetting curve is ruthless to passive eyes, but powerless against spaced intervals.",
-    color: "#0d1117" // Core Dark Slate
+    color: "#0d1117"
   },
   {
     quote: "The forest of your NEET rank is grown one reviewed card at a time.",
-    color: "#8b5cf6" // Deep Violet
+    color: "#8b5cf6"
   }
 ];
 
@@ -2096,23 +2108,24 @@ function runIntroSequence() {
   const stage2 = document.getElementById('stage2Quote');
   const quoteEl = document.getElementById('dynamicOpenerQuote');
 
-  const item = starterQuotes[Math.floor(Math.random() * starterQuotes.length)];
-  if (quoteEl) {
+  if (quoteEl && starterQuotes.length > 0) {
+    const item = starterQuotes[Math.floor(Math.random() * starterQuotes.length)];
     quoteEl.textContent = `“${item.quote}”`;
     quoteEl.style.color = item.color;
   }
 
-  // 1.3s splash hold -> smooth fade into soothing quote screen
+  // 1.3s splash hold -> smooth cross-fade to Stage 2
   setTimeout(() => {
     if (stage1 && stage2) {
+      stage1.style.transition = 'opacity 0.4s ease';
       stage1.style.opacity = '0';
       setTimeout(() => {
         stage1.style.display = 'none';
         stage2.style.display = 'flex';
-        requestAnimationFrame(() => {
+        setTimeout(() => {
           stage2.style.opacity = '1';
-        });
-      }, 500);
+        }, 30);
+      }, 400);
     }
   }, 1300);
 }
@@ -2120,14 +2133,21 @@ function runIntroSequence() {
 function dismissIntroOverlay() {
   const overlay = document.getElementById('introOverlay');
   if (overlay) {
-    overlay.style.transition = 'opacity 0.4s ease';
+    overlay.style.transition = 'opacity 0.35s ease';
     overlay.style.opacity = '0';
-    setTimeout(() => overlay.remove(), 400);
+    setTimeout(() => {
+      overlay.style.display = 'none';
+      overlay.remove();
+    }, 350);
   }
 }
 
-// Automatically initiate intro sequence
-window.addEventListener('DOMContentLoaded', runIntroSequence);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', runIntroSequence);
+} else {
+  runIntroSequence();
+}
+  
   
 /* ================= SYSTEM PERMISSIONS MANAGER ================= */
 async function requestAllAppPermissions() {
