@@ -2140,7 +2140,7 @@ function runIntroSequence() {
     quoteEl.style.color = item.color;
   }
 
-  // 1.2s Hold -> Fade in Stage 2 directly on top without revealing dashboard
+// 1.5s Hold -> Fade in Stage 2 directly on top without revealing dashboard
   setTimeout(() => {
     if (stage1 && stage2) {
       stage2.style.zIndex = "3";
@@ -2149,7 +2149,7 @@ function runIntroSequence() {
         stage1.style.display = "none";
       }, 500);
     }
-  }, 1200);
+  }, 1500);
 }
 
 function dismissIntroOverlay() {
