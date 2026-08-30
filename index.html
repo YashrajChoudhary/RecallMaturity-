@@ -2153,20 +2153,16 @@ function runIntroSequence() {
     quoteEl.style.color = item.color;
   }
 
-  // 1.3s splash hold -> smooth cross-fade to Stage 2
+  // 1.2s Hold -> Fade in Stage 2 directly on top without revealing dashboard
   setTimeout(() => {
     if (stage1 && stage2) {
-      stage1.style.transition = 'opacity 0.4s ease';
-      stage1.style.opacity = '0';
+      stage2.style.zIndex = "3";
+      stage2.style.opacity = "1";
       setTimeout(() => {
-        stage1.style.display = 'none';
-        stage2.style.display = 'flex';
-        setTimeout(() => {
-          stage2.style.opacity = '1';
-        }, 30);
-      }, 400);
+        stage1.style.display = "none";
+      }, 500);
     }
-  }, 1300);
+  }, 1200);
 }
 
 function dismissIntroOverlay() {
@@ -2186,8 +2182,7 @@ if (document.readyState === 'loading') {
 } else {
   runIntroSequence();
 }
-  
-  
+
 /* ================= SYSTEM PERMISSIONS MANAGER ================= */
 async function requestAllAppPermissions() {
   // 1. Request Notification Permission (Alerts, Reminders & Pop-ups)
@@ -2208,14 +2203,16 @@ async function requestAllAppPermissions() {
       console.warn('Media permissions dismissed:', e);
     }
   }
-  }
-  
+}
+
+/* ================= INITIALIZATION ================= */
 (async function init(){
+  try { runIntroSequence(); } catch(e) {}
   await loadDB();
   showQuote();
   initSpeech();
   renderAll();
-  setTimeout(requestAllAppPermissions, 1000); // Prompts permissions smoothly 1s after dashboard renders
+  setTimeout(requestAllAppPermissions, 1000);
   setTimeout(tryAutoBackup, 4000);
   setInterval(tryAutoBackup, 30*60*1000);
 })();
