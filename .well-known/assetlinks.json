@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "io.github.yashrajchoudhary.recallmaturity",
+    "sha256_cert_fingerprints": [
+      "F1:BF:0F:BF:CF:99:B6:B0:09:CB:30:93:53:6C:17:ED:D9:C2:88:E4:9F:64:77:CE:72:65:D3:37:38:02:15:BC"
+    ]
+  }
+}]
