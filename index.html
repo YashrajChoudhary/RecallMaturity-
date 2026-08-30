@@ -2067,6 +2067,7 @@ function sendStudyNotification(title, message) {
 
 function checkReminders(){
   const now = new Date(); 
+  const ts = todayStr();
   const hhmm = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
   db.topics.forEach(t => {
     const r = nextReview(t); 
@@ -2080,7 +2081,6 @@ function checkReminders(){
     }
   });
 }
-
 setInterval(checkReminders, 20000);
 
 /* ============ render all ============ */
